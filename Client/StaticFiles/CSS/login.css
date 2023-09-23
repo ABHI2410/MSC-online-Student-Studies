@@ -59,11 +59,34 @@ body {
     padding: 20px 0px 20px 0px;
 }
 
+.input-last {
+    padding-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
 .button2 {
-    width: 50%;
+    flex: 1;
+    margin: 0 5px;
+    padding: 20px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.button1 {
+    width: 75%;
     align-self: center;
 }
 
-.input-last {
-    padding-bottom: 20px;
+.button2:first-child {
+    margin-right: 5px;
+}
+
+.button2:last-child {
+    margin-left: 5px;
 }
