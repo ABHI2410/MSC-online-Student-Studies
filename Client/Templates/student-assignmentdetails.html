@@ -33,10 +33,10 @@
   
 <div class="content">
   <div class="sidebar">
-    <a class="active" href="student.html">Home</a>
+    <a href="student.html">Home</a>
     <a href="student-syllabus.html">Syllabus</a>
     <a href="students-modules.html">Modules</a>
-    <a href="student-assignments.html">Assignments</a>
+    <a class="active" href="student-assignments.html">Assignments</a>
     <a href="student-grades.html">Grades</a>
     <a href="student-discussion.html">Discussion</a>
     <a href="student-people.html">People</a>
@@ -48,12 +48,12 @@
     <div class="row">
         <!-- Navigation Menu -->
         <div class="topnav">
-            <p class="course-name">Course A</p>
+            <p class="course-name">Course Name</p>
             <div id="myLinks">
-              <a class="active" href="student.html">Home</a>
+              <a href="student.html">Home</a>
               <a href="student-syllabus.html">Syllabus</a>
               <a href="students-modules.html">Modules</a>
-              <a href="student-assignments.html">Assignments</a>
+              <a class = "active" href="student-assignments.html">Assignments</a>
               <a href="student-grades.html">Grades</a>
               <a href="student-discussion.html">Discussion</a>
               <a href="student-people.html">People</a>
@@ -65,30 +65,35 @@
               </a>
         </div>
     </div>
-        
-        <div class="row">
+        <div class="row"> 
             <table id = "class">
-                <tr>
-                  <td>Instructor Name:</td>
-                  <td>Dr. Jhon Doe</td>
+                <tr class="module">
+                    <th class="modulesection">Assignments 1</th>
                 </tr>
                 <tr>
-                  <td>Class Timmings: </td>
-                  <td>3:00 pm to 4:20 pm</td>
+                    <td>
+                        Assignemnt Description<br>
+                        Detailes of the Assignemnt
+                    </td>
                 </tr>
                 <tr>
-                  <td>Meeting location: </td>
-                  <td>Building 5, 301</td>
+                    <td class="resp">
+                        <div class="uploadsection">
+                            Drag and drop files here to upload
+                        </div>
+                            <ul style="display: inline-grid; padding: 10px;">
+                                <li><button class="submit-btn" style="width: 200px"> Upload file</button></li>
+                                <li><button class="submit-btn" style="width: 200px"> Create a drive file</button></li>
+                            </ul>
+                    </td>
                 </tr>
                 <tr>
-                  <td>Mode: </td>
-                  <td>IN person</td>
+                    <td class="module" style="text-align: center;">
+                        <button class="submit-btn" style="width: 100px"> Submit</button>
+                    </td>
                 </tr>
-       
               </table>
-        </div>
-        <div class="row">
-            <p>Recommended Textboox: Some textbook name with authors name.</p>
+              
         </div>
     </div>
 

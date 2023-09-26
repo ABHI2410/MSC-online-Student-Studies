@@ -209,7 +209,8 @@ td{
     background-color: #f1f1f1;
     left: 0;
     padding: .75rem;
-    bottom: -62.5%;
+    bottom: 0%;
+    z-index: -1;
     font-size: .85rem;
     font-weight: 600;
 }
