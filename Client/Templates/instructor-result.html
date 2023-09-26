@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../StaticFiles/CSS/exam.css">
+</head>
+<body>
+    <div class="header">
+        <a href="#" class="logo">MSC</a>
+      </div>
+    <main class="">
+        <div class="content-bar1">
+            <div class="content">
+                <div class="container">
+                    <h1>Student Name: Rahul</h1>
+                    <h3 class="h3">Grade 5/10</h3>
+                    <div class="card">
+                        <div class="tile flex">
+                            <h3 class="quiz">Question 1</h3>
+                            <div class="tile-content">
+                                <div class="flex qa-section">
+                                    <input placeholder="What are the benefits of using https over http?" class="input"/>
+                                    <div class="res green">Correct</div>
+                                </div>
+                                <textarea placeholder="HTTPS uses the SSL/TLS protocol to encrypt communications so that attackers can't steal data. SSL/TLS also confirms that a website server is who it says it is, preventing impersonations."></textarea>
+                            </div>
+                       </div>
+
+                       <div class="tile flex">
+                            <h3 class="quiz">Question 2</h3>
+                            <div class="tile-content">
+                                <div class="flex qa-section">
+                                    <input placeholder="Which Protocol is used in transport layer?" class="input"/>
+                                    <div class="res red">Incorrect</div>
+                                </div>
+                                <div class="flex check-boxes">
+                                    <div class="flex select">
+                                        <label for="">TCP</label>
+                                        <input type="checkbox"/>
+                                    </div>
+                                    <div class="flex select">
+                                        <label for="">IP</label>
+                                        <input type="checkbox"/>
+                                    </div>
+                                </div>
+                                <div class="flex check-boxes">
+                                    <div class="flex select">
+                                        <label for="">HTTP</label>
+                                        <input type="checkbox" checked/>
+                                    </div>
+                                    <div class="flex select">
+                                        <label for="">FP</label>
+                                        <input type="checkbox"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tile flex">
+                            <h3 class="quiz">Question 3</h3>
+                            <div class="tile-content">
+                                <div class="flex qa-section">
+                                    <input placeholder="Is 64-bit IP address used now?" class="input"/>
+                                    <div class="res green">Correct</div>
+                                </div>
+                                <div class="true-false">
+                                    <div class="flex choice">
+                                        <label for="">True</label>
+                                        <input type="checkbox" checked/>
+                                    </div>
+                                    <div class="flex choice">
+                                        <label for="">False</label>
+                                        <input type="checkbox"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tile-content">
+                        <textarea placeholder="Provide Feedback"></textarea>
+                    </div>
+                    <button style="flex: 50%;">Give Feedback</button>
+                    <button style="flex: 50%;" onclick="location.href='./instructor.html'">Close</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

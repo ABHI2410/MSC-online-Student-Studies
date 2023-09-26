@@ -17,7 +17,7 @@
     <a href="#" class="logo">MSC</a>
   <div class = "wrapper">
     <ul>
-      <li><a href="./student-profile.html">Profile</a></li>
+      <li><a href="./instructor-profile.html">Profile</a></li>
       <li><a href="#">Courses</a></li>
     </ul>
 
@@ -31,28 +31,21 @@
   
 <div class="content">
     <div class="sidebar">
-      <a href="./student.html">Home</a>
-      <a href="./student-syllabus.html">Syllabus</a>
-      <a href="./students-modules.html">Modules</a>
-      <a href="./student-assignments.html">Assignments</a>
-      <a href="./student-grades.html">Grades</a>
-      <a class="active" href="#Grades">Discussion</a>
-      <a href="./student-people.html">People</a>
+      <a href="./instructor.html">Home</a>
+      <a class="active" href="./instructor-create-course.html">Create Course</a>
+      <a href="./instructor-discussion.html">Discussion</a>
+      <a href="./instructor-people.html">People</a>
     </div>
     <div class="main">
         <!-- Simulate a smartphone / tablet -->
         <div class="row">
             <!-- Navigation Menu -->
             <div class="topnav">
-                <p class="course-name">Web Data Management</p>
                 <div id="myLinks">
-                  <a href="./student.html">Home</a>
-                  <a href="./student-syllabus.html">Syllabus</a>
-                  <a href="./students-modules.html">Modules</a>
-                  <a href="./student-assignments.html">Assignments</a>
-                  <a href="./student-grades.html">Grades</a>
-                  <a href="./student-discussion.html">Discussion</a>
-                  <a href="./student-people.html">People</a>
+                  <a href="./instructor.html">Home</a>
+                  <a href="./instructor-create-course.html">Create Course</a>
+                  <a href="./instructor-discussion.html">Discussion</a>
+                  <a href="./instructor-people.html">People</a>
                 </div>
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i class="icon-chevron-down"></i>
@@ -73,53 +66,24 @@
         <div class="row">
             <table id = "class">
                 <tr class="module">
-                    <th class="modulesection">Discussion</th>
+                    <th class="modulesection">Create Course</th>
                 </tr>
               </table>
         </div>
         <div class="row">
-            <!--forum design here-->
             <div class="message-board">                
-                <!-- Message List -->
-                <div class="message-list">
-                    <!-- Individual Messages -->
-                    <div class="message">
-                        <div class="user-avatar">
-                            <img src="../StaticFiles/Media/profile.png" alt="User 1">
-                        </div>
-                        <div class="message-content">
-                            <p class="user-name">User 1</p>
-                            <p class="message-text">Some message</p>
-                            <p class="message-date">2 hours ago</p>
-                        </div>
-                    </div>
-            
-                    <div class="message">
-                        <div class="user-avatar">
-                            <img src="../StaticFiles/Media/profile.png" alt="User 2">
-                        </div>
-                        <div class="message-content">
-                            <p class="user-name">User 2</p>
-                            <p class="message-text">Some message</p>
-                            <p class="message-date">1 hour ago</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Add more messages as needed -->
-                </div>
-            
-                <!-- Message Input Form -->
                 <div class="message-input">
-                    <input type="text" placeholder="Type your message...">
-                    <button>Send</button>
+                    <input type="text" placeholder="Course Name">
+                    <input type="text" placeholder="Professor Name">
+                    <input type="text" placeholder="Objective">
+                </div>
+                <div style="padding-top: 20px;">
+                    <button class="message-input">Create</button>
                 </div>
 
         </div>
         
     </div>
-
-    
-    
  </div>
  <div class="chatbox">
   <div class="chatbox-header">
