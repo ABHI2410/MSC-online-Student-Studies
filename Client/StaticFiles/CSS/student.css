@@ -74,15 +74,16 @@
   }
   
   .topnav a.icon {
-    background: #f1f1f1;
+    background: #edf1fe;
     display: block;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 15px;
+    color: black;
   }
   
   .topnav a:hover {
-    background-color: #f1f1f1;
+    background-color: #edf1fe;
     color: black;
   }
   
@@ -299,7 +300,7 @@
   position: absolute;
   border: none;
   border-radius: 5px;
-  margin: 5px;
+  margin: 15px;
   color: #ffffff;
 }
 
@@ -336,8 +337,8 @@
   align-items: center;
   text-align: center;
   font-size: 20px;
-  background-color: #0d1425;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   padding: 30px 30px;
 }
 
