@@ -427,7 +427,7 @@ button {
   position: absolute;
   border: none;
   border-radius: 5px;
-  margin: 15px;
+  /* margin: 15px; */
   color: #ffffff;
 }
 
