@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css">
     <link rel="stylesheet" href="../StaticFiles/CSS/exam.css">
 </head>
 <body>
@@ -13,14 +14,39 @@
     <main>
         <div class="content-bar1">
             <div class="content">
-                <div class="container">
+                <div class="container" style="max-height: none;">
                     <div class="profile-info">
+                        <a href="student-profile-edit.html">
+                            <span id="icon" style="height: 20px;width: 20px;display: inline-flex;margin-left: 95%;">
+                                <img src="../StaticFiles/Media/pen-to-square-regular.svg">
+                            </span>
+                        </a>
+                        
                         <div class="profile-image">J</div>
                         <div class="profile-name">Dr. Jefferson</div>
                         <div class="profile-details">
                             <p>Email: instructor@uta.com</p>
                             <p>Location: Arlington</p>
                             <p>User Type: Instructor</p>
+                        </div>
+                        <div class="profile-details">
+                            <p>Bio: <br> More Information on Instructor</p>
+                            <br>
+                            <p>Prefered Contact Information: <br>
+                                <ul>
+                                    <li>Phone: +1 9876543210</li>
+                                    <li>Email: instructor@uta.com</li>
+                                    <li>Socail Media: linkedin.com/jefferson</li>
+                                </ul>
+                            </p>
+                            <br>
+                            <p>Courses Taught: <br>
+                                <ul>
+                                    <li>1. Design Modeling and Analysis Techniques</li>
+                                    <li>2. Design and Analysis of Algorithms</li>
+                                    <li>3. Discret Mathematics</li>
+                                </ul>
+                                </p>
                         </div>
                     </div>
                     <button onclick="location.href='./instructor.html'">Back to Home</button>
