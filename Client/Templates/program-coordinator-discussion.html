@@ -17,7 +17,7 @@
     <a href="#" class="logo">MSC</a>
   <div class = "wrapper">
     <ul>
-      <li><a href="./qa-profile.html">Profile</a></li>
+      <li><a href="./program-coordinator-profile.html">Profile</a></li>
       <li><a href="./course_list.html">Courses</a></li>
     </ul>
 
@@ -31,9 +31,8 @@
   
 <div class="content">
     <div class="sidebar">
-      <a href="./qa.html">Home</a>
-      <a href="./qa-policies.html">Policies</a>
-      <a class="active" href="./qa-recomendations.html">Recommendation</a>
+      <a href="./program-coordinator.html">Home</a>
+      <a class="active" href="./program-coordinator-discussion.html">Coordinate/Contact</a>
     </div>
     <div class="main">
         <!-- Simulate a smartphone / tablet -->
@@ -41,9 +40,8 @@
             <!-- Navigation Menu -->
             <div class="topnav">
                 <div id="myLinks">
-                  <a href="./qa.html">Home</a>
-                  <a href="./qa-policies.html">Policies</a>
-                  <a href="./qa-recomendations.html">Recommendations</a>
+                    <a href="./program-coordinator.html">Home</a>
+                    <a href="./program-coordinator-discussion.html">Coordinate/Contact</a>
                 </div>
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i class="icon-chevron-down"></i>
@@ -64,23 +62,53 @@
         <div class="row">
             <table id = "class">
                 <tr class="module">
-                    <th class="modulesection">Provide Recommendation</th>
+                    <th class="modulesection">Coordinate/Contact</th>
                 </tr>
               </table>
         </div>
         <div class="row">
+            <!--forum design here-->
             <div class="message-board">                
-                <div class="message-input">
-                    <input type="text" placeholder="Recommendation Topic">
-                    <input type="text" placeholder="Recommendation">
+                <!-- Message List -->
+                <div class="message-list">
+                    <!-- Individual Messages -->
+                    <div class="message">
+                        <div class="user-avatar">
+                            <img src="../StaticFiles/Media/profile.png" alt="User 1">
+                        </div>
+                        <div class="message-content">
+                            <p class="user-name">User 1</p>
+                            <p class="message-text">Some message</p>
+                            <p class="message-date">2 hours ago</p>
+                        </div>
+                    </div>
+            
+                    <div class="message">
+                        <div class="user-avatar">
+                            <img src="../StaticFiles/Media/profile.png" alt="User 2">
+                        </div>
+                        <div class="message-content">
+                            <p class="user-name">User 2</p>
+                            <p class="message-text">Some message</p>
+                            <p class="message-date">1 hour ago</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Add more messages as needed -->
                 </div>
-                <div style="padding-top: 20px;">
-                    <button class="message-input">Provide Recommendation</button>
+            
+                <!-- Message Input Form -->
+                <div class="message-input">
+                    <input type="text" placeholder="Type your message...">
+                    <button>Send</button>
                 </div>
 
         </div>
         
     </div>
+
+    
+    
  </div>
  <div class="chatbox">
   <div class="chatbox-header">
