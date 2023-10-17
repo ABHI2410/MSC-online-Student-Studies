@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Switch, Route  } from "react-router-dom"
-import Login from "./Components/login";
-import Register from "./Components/register";
-import ForgotPWD from "./Components/forgotpassword";
-import EnrolledCourses from './Components/enrolledcourses'
-import CourseDetails from "./Components/coursedashboard";
-
+import Login from "./Modals/login";
+import Register from "./Modals/register";
+import ForgotPWD from "./Modals/forgotpassword";
+import EnrolledCourses from './Modals/enrolledcourses';
+import CourseDashboard from "./Modals/coursedashboard";
+import CourseSyllabus from "./Modals/coursesyllabus";
+import CourseModules from "./Modals/coursemodules";
+import CoursePeople from "./Modals/coursePeople";
 export const Routes = () => {
     return (
         <Router>
@@ -21,8 +23,17 @@ export const Routes = () => {
                 <Route path="/courseList">
                     <EnrolledCourses/>
                 </Route>
-                <Route path="/course">
-                    <CourseDetails/>
+                <Route path="/course/dashboard">
+                    <CourseDashboard/>
+                </Route>
+                <Route path="/course/syllabus">
+                    <CourseSyllabus/>
+                </Route>
+                <Route path="/course/modules">
+                    <CourseModules/>
+                </Route>
+                <Route path="/course/people">
+                    <CoursePeople/>
                 </Route>
             </Switch>
         </Router>

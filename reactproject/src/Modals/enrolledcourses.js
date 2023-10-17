@@ -1,7 +1,7 @@
 import * as React from 'react';
 import logo from '../images/MSC-logos_white.png';
-import ImgMediaCard from './cardwithimg';
-import ResponsiveAppBar from './header'
+import ImgMediaCard from '../Components/cardwithimg';
+import ResponsiveAppBar from '../Components/header'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -26,7 +26,7 @@ const coursesData = [
   function Courses() {
     const courseCards = coursesData.map((course, index) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-        <Link to="/course">
+        <Link to="/course/dashboard">
         <ImgMediaCard
           ImgUrl={course.ImgUrl}
           Name={course.Name}

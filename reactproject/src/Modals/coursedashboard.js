@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ResponsiveAppBar from './header'
-import ClippedDrawer from './cousenavbar';
+import ResponsiveAppBar from '../Components/header'
+import ClippedDrawer from '../Components/cousenavbar';
 import Divider from '@mui/material/Divider';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -68,11 +68,11 @@ import Grid from '@mui/material/Grid';
   }
   
   
-function CourseDetails() {
+function CourseDashboard() {
   return (
     <ResponsiveAppBar content={<Courses />} />
     
   );
 }
 
-export default CourseDetails;
+export default CourseDashboard;
