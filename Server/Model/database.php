@@ -60,28 +60,46 @@ class DatabaseAPI{
         $this->conn->close();
     }
 
-    public function getAll($tableName){
-        try{
-            $sqlQuery = "SELECT * FROM $tableName WHERE deleted = 0 ORDER BY ID";
-            $output = $this->select($sqlQuery);
-
-            return $output;
+    public function selectAll($tableName, $whereConditions = [], $selectColumns = '*') {
+        $defaultOptions = array("deleted" => 0);
+        $whereConditions = array_merge($defaultOptions, $whereConditions);
+        try {
+            $sqlQuery = "SELECT $selectColumns FROM $tableName";
+            $params = [];
+            $paramTypes = "";
+            
+            if (!empty($whereConditions)) {
+                $sqlQuery .= " WHERE ";
+                $conditions = [];
+    
+                foreach ($whereConditions as $column => $value) {
+                    if ($column === 'age') {
+                        // 'i' for integers
+                        $paramTypes .= 'i';
+                    } else {
+                        // 's' for string (varchar columns)
+                        $paramTypes .= 's';
+                    }
+    
+                    $conditions[] = "$column = ?";
+                    $params[] = $value;
+                }
+    
+                $sqlQuery .= implode(' AND ', $conditions);
+            }
+    
+            $output = $this->select($sqlQuery, array_merge([$paramTypes], $params));
+    
+            if (is_array($output)) {
+                return $output; // Return the result
+            } else {
+                throw new Exception("Error fetching data");
+            }
         } catch (Exception $e) {
-            throw New Exception($e->getMessage());
-        }
-
-    }
-
-    public function getOne($tableName,$id){
-        try{
-            $sqlQuery = "SELECT * FROM $tableName WHERE ID = ? ORDER BY ID";
-            $output = $this->select($sqlQuery,['i', $id]);
-
-            return $output;
-        } catch (Exception $e) {
-            throw New Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
+    
 
     public function createOne($tableName,$data){
         try {    

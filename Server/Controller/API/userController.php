@@ -11,14 +11,8 @@ class UserController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $userModel = new UserModel();
-                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) {
-                    $id = $arrQueryStringParams['id'];
-                    $arrUsers = $userModel->getOneUser($id);
-                    $responseData = json_encode($arrUsers);
-                } else {
-                    $arrUsers = $userModel->getUsers();
-                    $responseData = json_encode($arrUsers);
-                }
+                $arrUsers = $userModel->getUser($arrQueryStringParams);
+                $responseData = json_encode($arrUsers);
                 
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';

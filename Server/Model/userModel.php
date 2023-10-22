@@ -2,11 +2,8 @@
 require_once PROJECT_ROOT_PATH . "\Model\database.php";
 
 class UserModel extends DatabaseAPI{
-    public function getUsers(){  
-        return $this->getAll("users");
-    }
-    public function getOneUser($id){
-        return $this->getOne("users",$id);
+    public function getUser($params){
+        return $this->selectAll("users",$params);
     }
     public function createUser($postData){
         return $this->createOne("users",$postData);
