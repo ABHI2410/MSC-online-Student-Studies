@@ -23,13 +23,7 @@ class DatabaseAPI{
         }
     }
     public function createDatabase() {
-        try{
-            $this->conn->select_db(DB_DATABASE_NAME);
-        } catch (mysqli_sql_exception $e) {
-            echo "Error selecting the database: " . $e->getMessage() . "\n";
-        }
-
-        $sql = "CREATE DATABASE IF NOT EXISTS DB_DATABASE_NAME";
+    $sql = "CREATE DATABASE IF NOT EXISTS DB_DATABASE_NAME";
         try{
             $result = $this->conn->query($sql);
             if ($this->conn->query($sql) === true){
@@ -106,7 +100,11 @@ class DatabaseAPI{
                     $paramTypes .= 's';
                 }
             
-                $params[] = $value;
+                if ($key === 'password') {
+                    $params[] = password_hash($value, PASSWORD_ARGON2I);
+                } else {
+                    $params[] = $value;
+                }
             }
             array_unshift($params,$paramTypes);
             $output = $this->select($sqlQuery,$params);
@@ -144,8 +142,13 @@ class DatabaseAPI{
                     // 's' for string (varchar columns)
                     $paramTypes .= 's';
                 }
-                $setValues[] = "$key = ?";
-                $params[] = $value;
+                if ($key === 'password') {
+                    $setValues[] = "$key = ?";
+                    $params[] = password_hash($value, PASSWORD_ARGON2I);
+                } else {
+                    $setValues[] = "$key = ?";
+                    $params[] = $value;
+                }
             }
     
             $params[] = $id; // Add the ID as the last parameter
@@ -182,8 +185,13 @@ class DatabaseAPI{
                     // 's' for string (varchar columns)
                     $paramTypes .= 's';
                 }
-                $setValues[] = "$key = ?";
-                $params[] = $value;
+                if ($key === 'password') {
+                    $setValues[] = "$key = ?";
+                    $params[] = password_hash($value, PASSWORD_ARGON2I);
+                } else {
+                    $setValues[] = "$key = ?";
+                    $params[] = $value;
+                }
             }
     
             $params[] = $id; // Add the ID as the last parameter
