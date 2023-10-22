@@ -66,6 +66,162 @@ class DatabaseAPI{
         $this->conn->close();
     }
 
+    public function getAll($tableName){
+        try{
+            $sqlQuery = "SELECT * FROM $tableName WHERE deleted = 0 ORDER BY ID";
+            $output = $this->select($sqlQuery);
+
+            return $output;
+        } catch (Exception $e) {
+            throw New Exception($e->getMessage());
+        }
+
+    }
+
+    public function getOne($tableName,$id){
+        try{
+            $sqlQuery = "SELECT * FROM $tableName WHERE ID = ? ORDER BY ID";
+            $output = $this->select($sqlQuery,['i', $id]);
+
+            return $output;
+        } catch (Exception $e) {
+            throw New Exception($e->getMessage());
+        }
+    }
+
+    public function createOne($tableName,$data){
+        try {    
+            $columns = implode(", ", array_keys($data));
+            $values = implode(", ", array_fill(0, count($data), "?"));
+            $sqlQuery = "INSERT INTO $tableName ($columns) VALUES ($values)";
+            $params = array();
+            $paramTypes = "";
+    
+            foreach ($data as $key => $value) {
+                if ($key === 'id' || $key === 'age') {
+                    // 'i' for integers
+                    $paramTypes .= 'i';
+                } else {
+                    // 's' for string (varchar columns)
+                    $paramTypes .= 's';
+                }
+            
+                $params[] = $value;
+            }
+            array_unshift($params,$paramTypes);
+            $output = $this->select($sqlQuery,$params);
+            if (is_bool($output)) {
+                return $output === true ? 200 : 500;
+            } elseif (is_array($output) && isset($output['affected_rows']) && $output['affected_rows'] > 0) {
+                return 200;
+            } else {
+                throw new Exception("Error inserting data");
+            }
+            
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function reformAll($tableName, $data) {
+        try {
+            if (isset($data['id'])) {
+                $id = $data['id'];
+                unset($data['id']); // Remove 'id' from the data array
+            } else {
+                throw new Exception("ID not provided in the data for updating.");
+            }
+    
+            $setValues = [];
+            $params = [];
+            $paramTypes = ""; 
+    
+            foreach ($data as $key => $value) {
+                if ($key === 'age') {
+                    // 'i' for integers
+                    $paramTypes .= 'i';
+                } else {
+                    // 's' for string (varchar columns)
+                    $paramTypes .= 's';
+                }
+                $setValues[] = "$key = ?";
+                $params[] = $value;
+            }
+    
+            $params[] = $id; // Add the ID as the last parameter
+            $paramTypes .= 'i'; // 'i' for the ID parameter
+    
+            $setClause = implode(", ", $setValues);
+            $sqlQuery = "UPDATE $tableName SET $setClause WHERE id = ?";
+            $output = $this->select($sqlQuery, array_merge([$paramTypes], $params));
+    
+            if (is_bool($output)) {
+                return $output === true ? 200 : 500;
+            } elseif (is_array($output) && isset($output['affected_rows']) && $output['affected_rows'] > 0) {
+                return 200;
+            } else {
+                throw new Exception("Error updating data");
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function updateAll($tableName, $id, $data) {
+        try {
+              
+            $setValues = [];
+            $params = [];
+            $paramTypes = ""; 
+    
+            foreach ($data as $key => $value) {
+                if ($key === 'age') {
+                    // 'i' for integers
+                    $paramTypes .= 'i';
+                } else {
+                    // 's' for string (varchar columns)
+                    $paramTypes .= 's';
+                }
+                $setValues[] = "$key = ?";
+                $params[] = $value;
+            }
+    
+            $params[] = $id; // Add the ID as the last parameter
+            $paramTypes .= 'i'; // 'i' for the ID parameter
+    
+            $setClause = implode(", ", $setValues);
+            $sqlQuery = "UPDATE $tableName SET $setClause WHERE id = ?";
+            $output = $this->select($sqlQuery, array_merge([$paramTypes], $params));
+    
+            if (is_bool($output)) {
+                return $output === true ? 200 : 500;
+            } elseif (is_array($output) && isset($output['affected_rows']) && $output['affected_rows'] > 0) {
+                return 200;
+            } else {
+                throw new Exception("Error updating data");
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+    
+    public function deleteOne($tableName, $id) {
+        try {
+            $sqlQuery = "UPDATE $tableName SET deleted = 1 WHERE id = ?";
+            $output = $this->select($sqlQuery,['i',$id]);
+    
+            if (is_bool($output)) {
+                return $output === true ? 200 : 500;
+            } elseif (is_array($output) && isset($output['affected_rows']) && $output['affected_rows'] > 0) {
+                return 200;
+            } else {
+                throw new Exception("Error updating data");
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
     public function select($query = " ", $params = []){
         try{
             $this->conn->select_db(DB_DATABASE_NAME);
@@ -74,24 +230,28 @@ class DatabaseAPI{
         }
         try {
             $stmt = $this->executeStatement( $query,$params);
-            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-            $stmt->close();
-
-            return $result;
+            if (stripos($query, 'SELECT') === 0) {
+                $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+                $stmt->close();
+                return $result;
+            } else {
+                $stmt->close();
+                return true;
+            }
         } catch (Exception $e) {
             throw New Exception( $e->getMessage());
         }
 
     }
-    private function executeStatement($query = "" , $params = [])
-    {
+    private function executeStatement($query = "" , $params = []){
+        $dataValues = array_slice($params,1);
         try {
             $stmt = $this->conn->prepare( $query );
             if($stmt === false) {
                 throw New Exception("Unable to do prepared statement: " . $query);
             }
             if( $params ) {
-                $stmt->bind_param($params[0], $params[1]);
+                $stmt->bind_param($params[0], ...$dataValues);
             }
             $stmt->execute();
             return $stmt;

@@ -8,4 +8,3 @@
 	header('Location: '.$uri.'/Server/');
 	exit;
 ?>
-Something is wrong with the installation :-(
