@@ -1,5 +1,7 @@
 import * as React from 'react';
+import axios from 'axios';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,7 +15,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DrawerAppBar from '../Components/plainnavbar';
+import PositionedSnackbar from '../Components/snackbar';
 import { Select, MenuItem, InputLabel } from '@mui/material';
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 
 function Copyright(props) {
   return (
@@ -31,19 +39,82 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 function Register() {
+    const history = useHistory();
     const [selectedRole, setSelectedRole] = useState('');
     const roles = ['Student', 'Instructor', 'QA', 'Program Coordinator'];
-
+    const [date, setDate] = React.useState(null);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarStatus, setSnackbarStatus] = React.useState('success');
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
     const handleRoleChange = (event) => {
         setSelectedRole(event.target.value);
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          Role: event.target.value,
+        }));
+
     };
-    const handleSubmit = (event) => {
+    const hadleDateChange = (date) => {
+      setDate(date) 
+      setUserData((prevUserData) => ({
+          ...prevUserData, 
+          DateOfBirth: date,
+        }));
+    };
+    const [userData, setUserData] = useState({
+      EmailID: '',
+      Password: '',
+      FirstName: '',
+      LastName: '',
+      PhoneNo: '',
+      Role: selectedRole,
+      RegistrationCode: '',
+      DateOfBirth: '',
+    });
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        [name]: value,
+      }));
+    };
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        try{
+          const response = await axios.post('http://localhost/index.php/user/create', userData);
+          const statusCode = response.status;
+          if (statusCode === 200) {
+            history.push('/course');
+            setSnackbarStatus('success');
+            setSnackbarMessage('User registration successful');
+            setSnackbarOpen(true);
+          } else if (statusCode === 400) {
+            setSnackbarStatus('info');
+            setSnackbarMessage('Invalid Data Provided');
+            setSnackbarOpen(true);
+          }else if (statusCode === 404) {
+            setSnackbarStatus('info');
+            setSnackbarMessage('No Data Provided');
+            setSnackbarOpen(true);
+          }else if (statusCode === 422) {
+            setSnackbarStatus('error');
+            setSnackbarMessage('Cant Process the requet');
+            setSnackbarOpen(true);
+          }else if (statusCode === 500) {
+            setSnackbarStatus('error');
+            setSnackbarMessage('Internal server Error');
+            setSnackbarOpen(true);
+          }else {
+            // Handle other statuses or errors
+            setSnackbarStatus('error');
+            setSnackbarMessage('An error occurred during registration');
+            setSnackbarOpen(true);
+          }
+        } catch (error) {
+          setSnackbarStatus('error');
+          setSnackbarMessage('An error occurred during registration');
+          setSnackbarOpen(true);
+      }
     };
 
   return (
@@ -73,9 +144,10 @@ function Register() {
                   name="firstName"
                   required
                   fullWidth
-                  id="firstName"
+                  id="FirstName"
                   label="First Name"
                   autoFocus
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -84,8 +156,9 @@ function Register() {
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  name="lastName"
+                  name="LastName"
                   autoComplete="family-name"
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -93,20 +166,22 @@ function Register() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="EmailID"
                   name="email"
                   autoComplete="email"
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="Password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -133,9 +208,28 @@ function Register() {
                   fullWidth
                   id="registration code"
                   label="Registration Code"
-                  name="registrationCode"
+                  name="RegistrationCode"
                   autoComplete="registration-code"
+                  onChange={handleInputChange}
                 />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phoneno"
+                  label="Phone No"
+                  name="PhoneNo"
+                  autoComplete="phone-no"
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                      <DatePicker label="Date of Birth" id="dateofbirth" name="DateOfBirth"
+                        value={date} onChange={hadleDateChange} sx={{width : "100%"}}
+                      />
+                </LocalizationProvider>
               </Grid>
             </Grid>
             <Link to = "/courseList">
@@ -159,7 +253,13 @@ function Register() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      <PositionedSnackbar
+        open={snackbarOpen}
+        status={snackbarStatus}
+        message={snackbarMessage}
+      />
     </ThemeProvider>
+
   );
 }
 

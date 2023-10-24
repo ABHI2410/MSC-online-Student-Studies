@@ -1,6 +1,9 @@
 <?php
+
+require_once PROJECT_ROOT_PATH . "\Model\Core\createDatabase.php";
 class DatabaseAPI{
     private $conn;
+    
 
     public function __construct(){
         try{
@@ -27,11 +30,14 @@ class DatabaseAPI{
         try{
             $result = $this->conn->query($sql);
             if ($this->conn->query($sql) === true){
+                $this->conn->commit();
                 echo "Databse created successfully.\n";
             } else {
+                $this->conn->rollback();
                 echo "Error creating database: ".$this->conn->error."\n";
             }
         } catch (Exception $e) {
+            $this->conn->rollback();
             echo "Unexpected encounter while creating Database: ".$e->getMessage()."\n";
         }
     }
@@ -39,16 +45,18 @@ class DatabaseAPI{
         try{
             $this->conn->select_db(DB_DATABASE_NAME);
         } catch (mysqli_sql_exception $e) {
-            echo "Error selecting the database: " . $e->getMessage() . "\n";
+            $this->createDatabase();
+            $this->conn->select_db(DB_DATABASE_NAME);
         }
-        
-        $sql="CREATE TABLE IF NOT EXISTS $tableName ($tableSchema);";
+        $obj = new Schema();
+        $schema = $obj->{$tableSchema};
+        $sql="CREATE TABLE IF NOT EXISTS $tableName ($schema);";
         try{
             $result = $this->conn->query($sql);
             if ($this->conn->query($sql) === true){
-                echo "Table created successfully.\n";
+                return 200;
             } else {
-                echo "Error creating Table: ".$this->conn->error."\n";
+                return "Error creating Table: ".$this->conn->error."\n";
             }
         } catch (Exception $e) {
             echo "Unexpected encounter while creating Table: " . $e->getMessage() . "\n";
@@ -74,10 +82,8 @@ class DatabaseAPI{
     
                 foreach ($whereConditions as $column => $value) {
                     if ($column === 'age') {
-                        // 'i' for integers
                         $paramTypes .= 'i';
                     } else {
-                        // 's' for string (varchar columns)
                         $paramTypes .= 's';
                     }
     
@@ -89,7 +95,15 @@ class DatabaseAPI{
             }
     
             $output = $this->select($sqlQuery, array_merge([$paramTypes], $params));
-    
+            $output = $this->replaceForeignKeyValues($output);
+            foreach ($output as &$innerArray) {
+                if (array_key_exists('password', $innerArray)) {
+                    unset($innerArray['password']);
+                }
+                if (array_key_exists('deleted', $innerArray)) {
+                    unset($innerArray['deleted']);
+                }
+            }
             if (is_array($output)) {
                 return $output; // Return the result
             } else {
@@ -131,7 +145,7 @@ class DatabaseAPI{
             } elseif (is_array($output) && isset($output['affected_rows']) && $output['affected_rows'] > 0) {
                 return 200;
             } else {
-                throw new Exception("Error inserting data");
+                throw new Exception("Error Regestering.");
             }
             
         } catch (Exception $e) {
@@ -246,6 +260,41 @@ class DatabaseAPI{
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    private function replaceForeignKeyValues($data) {
+        // Define an array that maps foreign key columns to their related tables
+        $foreignKeyMappings = [
+            'Program Coordinator ID' => 'user',
+            'Program ID' => 'program',
+            'User ID' => 'user',
+            'Instructor ID' => 'user',
+            'Course ID' => 'course',
+            'Assignment ID' => 'assignment',
+            'Transponder A' => 'user',
+            'Transponder B' => 'user',
+            'Transponder Sender' => 'user',
+            'Chat Histroy' => 'chat',
+            'Exam ID' => 'exam',
+            'Question ID' => 'question',
+            'Student ID' => 'user',
+            'Policy ID' => 'qapolicy',
+
+            // Add more foreign keys as needed
+        ];
+    
+        foreach ($data as &$row) {
+            foreach ($foreignKeyMappings as $column => $relatedTable) {
+                if (array_key_exists($column, $row)) {
+                    $relatedData = $this->select("SELECT * FROM $relatedTable WHERE ID = ?", ['i', $row[$column]]);
+                    if ($relatedData) {
+                        $row[$column] = $relatedData[0];
+                    }
+                }
+            }
+        }
+    
+        return $data;
     }
 
     public function select($query = " ", $params = []){
