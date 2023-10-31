@@ -13,7 +13,7 @@ class TableController extends BaseController
                 // $postData = json_decode($postData, true); // Decode JSON data into an associative array
                 if ($postData !== null) {
                     $tableModel = new TableModel();
-                    foreach ($postData as $tableName => $tableSchema) {
+                    foreach ($postData['formdata'] as $tableName => $tableSchema) {
                         $status = $tableModel->newTable($tableName,$tableSchema);
                     }
                     if ($status === 200){

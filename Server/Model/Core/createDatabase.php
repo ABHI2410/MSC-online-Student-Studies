@@ -2,7 +2,7 @@
 class Schema{
     // Create a user table
     public $userTableSchema = "ID INT AUTO_INCREMENT PRIMARY KEY,
-        UserID INT NOT NULL,
+        UserID VARCHAR(10) NOT NULL,
         EmailID VARCHAR(255) NOT NULL,
         Password VARCHAR(255) NOT NULL, 
         FirstName VARCHAR(50),
@@ -20,7 +20,8 @@ class Schema{
         Instagram VARCHAR(255),
         Twitter VARCHAR(255),
         Facebook VARCHAR(255),
-        deleted Bool DEFAULT 0
+        deleted Bool DEFAULT 0,
+        UNIQUE (EmailID)
     ";
 
     // Program Table

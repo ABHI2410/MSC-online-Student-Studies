@@ -12,7 +12,7 @@ import List from '@mui/material/List';
 import CloseIcon from '@mui/icons-material/Close';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-
+import { useLoginStatus } from '../Auth';
 import Avatar from '@mui/material/Avatar';
 import AdbIcon from '@mui/icons-material/Adb';
 import profile from '../images/man.svg';
@@ -72,6 +72,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 function ResponsiveAppBar({content}) {
   const [open, setOpen] = React.useState(false);
+  useLoginStatus();
 
   const handleDrawerOpen = () => {
     setOpen(true);

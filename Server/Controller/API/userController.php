@@ -1,47 +1,54 @@
 <?php
+header("Access-Control-Allow-Origin: *"); // Replace * with the specific origins allowed
+header("Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 class UserController extends Controller
 {
     public function createAction(){
+        
         $uri = $this->getUriSegments();
         $tableName = $uri[2];
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        if (strtoupper($requestMethod) == 'POST') {
+        if (strtoupper($requestMethod) === 'POST' || strtoupper($requestMethod) === 'OPTIONS') {
             try {
                 $postData = $this->getContentDataParams();
-                $check = $this->validateData($postData);
+                $files = $postData['files'];
+                $formadata = $postData['formdata'];
+                $check = $this->validateData($postData['formdata']);
                 if ($check === true){
                     if ($postData !== null) {
                         $userModel = new UserModel();
-
-                        $result = $userModel->get($tableName,array(['EnrollYear'] => date('Y')));
-                        $len = str_pad(count($result), 3, '0', STR_PAD_LEFT);
+                        $result = $userModel->get($tableName,['EnrollYear' => date('Y')]);
+                        $len = str_pad(count($result)+1, 5, '0', STR_PAD_LEFT);
                         $currentMonth = date('n'); // Get the current month (1 to 12)
-                        if ($currentMonth == 1) {
+                        if ($currentMonth >= 1 && $currentMonth <= 4) {
                             $term = 'Spring';
                             $val = 01;
-                        } elseif ($currentMonth == 5) {
+                        } elseif ($currentMonth >= 5 && $currentMonth <= 7) {
                             $term = 'Summer';
                             $val = 02;
-                        } elseif ($currentMonth == 8) {
+                        } elseif ($currentMonth >= 8 && $currentMonth <= 12) {
                             $term = 'Fall';
                             $val = 03;
                         } else {
                             $term = 'Other'; // Set a default term for other months
                         }
-                        $UserID = substr(date('Y'), -2) . strval($val) . $len;
-                        $currentDate = date('Y');
-                        $providedDate = $postData['DateOfBirth'];
-                        $providedDateYear = $providedDate->format("Y");
-                        $Age = intval($currentDate)-intval($providedDateYear);
+                        $UserID = substr(date('Y'), -2) . str_pad(strval($val), 2, '0', STR_PAD_LEFT) . $len;
+                        $providedDate = $formadata['DateOfBirth'];
+                        $format = "Y-m-d\TH:i:s.u\Z";
+                        $dateTime = DateTime::createFromFormat($format, $providedDate);
+                        $formadata['DateOfBirth'] = $dateTime->format('Y-m-d');;
+                        $currentDate = new DateTime();
+                        $age = $currentDate->diff($dateTime)->y;
                         $newarray = [
                             'UserID' => $UserID,
-                            'Semester' => $term,
-                            'EnrollYear' => date('Y'),
-                            'Age' => $Age
+                            'Term' => $term,
+                            'Age' => $age
                         ];
-                        $postData = array_merge($postData,$newarray);
+                        $postData = array_merge($formadata,$newarray);
                         
+                        unset($postData['RegistrationCode']);
                         $status = $userModel->create($tableName,$postData);
                         if ($status === 200){
                             $responseData = json_encode(['message' => 'User created successfully']);
@@ -71,11 +78,17 @@ class UserController extends Controller
     
         // send output 
         if (!$strErrorDesc) {
+            header("Access-Control-Allow-Origin: *"); // Replace * with the specific origins allowed
+            header("Access-Control-Allow-Methods: POST,OPTIONS");
+            header("Access-Control-Allow-Headers: Content-Type");
             $this->sendOutput(
                 $responseData,
                 array('Content-Type: application/json', 'HTTP/1.1 200 OK')
             );
         } else {
+            header("Access-Control-Allow-Origin: *"); // Replace * with the specific origins allowed
+            header("Access-Control-Allow-Methods: POST,OPTIONS");
+            header("Access-Control-Allow-Headers: Content-Type");
             $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
                 array('Content-Type: application/json', $strErrorHeader)
             );

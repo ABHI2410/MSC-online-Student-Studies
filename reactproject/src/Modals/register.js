@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -17,7 +16,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DrawerAppBar from '../Components/plainnavbar';
 import PositionedSnackbar from '../Components/snackbar';
 import { Select, MenuItem, InputLabel } from '@mui/material';
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -27,7 +25,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="/courseList">
         MSC
       </Link>{' '}
       {new Date().getFullYear()}
@@ -41,7 +39,7 @@ const defaultTheme = createTheme();
 function Register() {
     const history = useHistory();
     const [selectedRole, setSelectedRole] = useState('');
-    const roles = ['Student', 'Instructor', 'QA', 'Program Coordinator'];
+    const roles = ['Student', 'Instrutor', 'QA', 'Program Coordinator'];
     const [date, setDate] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [snackbarStatus, setSnackbarStatus] = React.useState('success');
@@ -53,6 +51,9 @@ function Register() {
           Role: event.target.value,
         }));
 
+    };
+    const handleSnackbarClose = () => {
+      setSnackbarOpen(false); // Reset the snackbarOpen state to false
     };
     const hadleDateChange = (date) => {
       setDate(date) 
@@ -80,16 +81,23 @@ function Register() {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
         try{
-          const response = await axios.post('http://localhost/index.php/user/create', userData);
+          const response = await fetch('http://localhost/index.php/user/create', {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            headers: {
+              'Content-Type': 'application/json',
+          },
+            body: JSON.stringify(userData), // body data type must match "Content-Type" header
+          });
           const statusCode = response.status;
           if (statusCode === 200) {
-            history.push('/course');
             setSnackbarStatus('success');
             setSnackbarMessage('User registration successful');
             setSnackbarOpen(true);
+            history.push('/login');
           } else if (statusCode === 400) {
-            setSnackbarStatus('info');
+            setSnackbarStatus('error');
             setSnackbarMessage('Invalid Data Provided');
             setSnackbarOpen(true);
           }else if (statusCode === 404) {
@@ -136,12 +144,12 @@ function Register() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="FirstName"
                   required
                   fullWidth
                   id="FirstName"
@@ -167,7 +175,7 @@ function Register() {
                   fullWidth
                   id="email"
                   label="EmailID"
-                  name="email"
+                  name="EmailID"
                   autoComplete="email"
                   onChange={handleInputChange}
                 />
@@ -232,7 +240,6 @@ function Register() {
                 </LocalizationProvider>
               </Grid>
             </Grid>
-            <Link to = "/courseList">
             <Button
               type="submit"
               fullWidth
@@ -241,7 +248,6 @@ function Register() {
             >
               Sign Up
             </Button>
-            </Link>
             <Grid container justifyContent="center">
               <Grid item>
                 <Link to="/login" variant="body2">
@@ -257,6 +263,7 @@ function Register() {
         open={snackbarOpen}
         status={snackbarStatus}
         message={snackbarMessage}
+        onClose={handleSnackbarClose}
       />
     </ThemeProvider>
 

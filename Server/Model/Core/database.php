@@ -48,7 +48,7 @@ class DatabaseAPI{
             $this->createDatabase();
             $this->conn->select_db(DB_DATABASE_NAME);
         }
-        $obj = new Schema();
+        $obj = new Schema();      
         $schema = $obj->{$tableSchema};
         $sql="CREATE TABLE IF NOT EXISTS $tableName ($schema);";
         try{
@@ -69,6 +69,11 @@ class DatabaseAPI{
     }
 
     public function selectAll($tableName, $whereConditions = [], $selectColumns = '*') {
+        $sendpassword = false;
+        if($tableName === 'userLogin'){
+            $tableName = 'user';
+            $sendpassword = true;
+        }
         $defaultOptions = array("deleted" => 0);
         $whereConditions = array_merge($defaultOptions, $whereConditions);
         try {
@@ -97,14 +102,17 @@ class DatabaseAPI{
             $output = $this->select($sqlQuery, array_merge([$paramTypes], $params));
             $output = $this->replaceForeignKeyValues($output);
             foreach ($output as &$innerArray) {
-                if (array_key_exists('password', $innerArray)) {
-                    unset($innerArray['password']);
+                if ($sendpassword === false){
+                    if (array_key_exists('password', $innerArray)) {
+                        unset($innerArray['password']);
+                    }
                 }
                 if (array_key_exists('deleted', $innerArray)) {
                     unset($innerArray['deleted']);
                 }
             }
             if (is_array($output)) {
+
                 return $output; // Return the result
             } else {
                 throw new Exception("Error fetching data");
@@ -122,9 +130,8 @@ class DatabaseAPI{
             $sqlQuery = "INSERT INTO $tableName ($columns) VALUES ($values)";
             $params = array();
             $paramTypes = "";
-    
             foreach ($data as $key => $value) {
-                if ($key === 'id' || $key === 'age') {
+                if ($key === 'Age') {
                     // 'i' for integers
                     $paramTypes .= 'i';
                 } else {
@@ -132,7 +139,7 @@ class DatabaseAPI{
                     $paramTypes .= 's';
                 }
             
-                if ($key === 'password') {
+                if ($key === 'Password') {
                     $params[] = password_hash($value, PASSWORD_ARGON2I);
                 } else {
                     $params[] = $value;

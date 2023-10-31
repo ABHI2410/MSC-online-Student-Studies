@@ -6,7 +6,7 @@ class ProgramController extends Controller
         $tableName = $uri[2];
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        if (strtoupper($requestMethod) == 'POST') {
+        if (strtoupper($requestMethod) == 'POST' || strtoupper($requestMethod) === 'OPTIONS') {
             try {
                 $postData = $this->getContentDataParams();
                 $check = $this->validateData($postData);
