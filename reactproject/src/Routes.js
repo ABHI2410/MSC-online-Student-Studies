@@ -7,6 +7,7 @@ import CourseDashboard from "./Modals/coursedashboard";
 import CourseSyllabus from "./Modals/coursesyllabus";
 import CourseModules from "./Modals/coursemodules";
 import CoursePeople from "./Modals/coursePeople";
+import CreateCourses from "./Modals/createcourses";
 export const Routes = () => {
     return (
         <Router>
@@ -34,6 +35,9 @@ export const Routes = () => {
                 </Route>
                 <Route path="/course/people">
                     <CoursePeople/>
+                </Route>
+                <Route path="/createcourse">
+                    <CreateCourses/>
                 </Route>
             </Switch>
         </Router>

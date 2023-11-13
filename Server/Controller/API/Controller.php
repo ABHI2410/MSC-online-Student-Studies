@@ -68,6 +68,9 @@ class Controller extends BaseController{
                             "access_token" => $accessToken,
                             "refresh_token" => $refreshToken,
                             "role" => $result["Role"],
+                            "id" => $result["ID"],
+                            "firstName" => $result["FirstName"],
+                            "lastName" => $result["LastName"],
                         ];
 
                     } else {

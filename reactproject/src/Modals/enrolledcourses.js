@@ -51,6 +51,16 @@ const coursesData = [
                             >
                                 Enroll Course
                             </Button>
+                            <Link to='/createcourse'>
+                              <Button
+                              variant="contained"
+                              color="primary"
+                              startIcon={<AddIcon />}
+                              sx={{ float: 'right', marginRight: '10px'}} // Align button to the right
+                              >
+                                  Create Course
+                              </Button>
+                            </Link>
                     </Typography>
                 </Grid>
                 {courseCards}

@@ -10,7 +10,7 @@ export function useLoginStatus() {
     // Check the login status here, using the login function
     const result = login(localStorage.getItem('access_token'));
 
-    if (!result.valid) {
+    if (!result) {
         history.push('/login');
     }
   }, [login]);

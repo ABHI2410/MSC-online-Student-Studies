@@ -63,7 +63,7 @@ function Login() {
         body: JSON.stringify(userData), // body data type must match "Content-Type" header
       });
       const statusCode = response.status;
-      const { access_token, refresh_token, role } = response.json();
+      const { access_token, refresh_token, role, id, first, last } = response.json();
       console.log(statusCode);
       if (statusCode === 200) {
         setSnackbarStatus('success');
@@ -74,6 +74,9 @@ function Login() {
         setUser(updatedUser);
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
+        localStorage.setItem('id', id);
+        localStorage.setItem('firstName', first);
+        localStorage.setItem('lastName', last);
         history.push('/courseList');
       } else if (statusCode === 400) {
         console.log("entred 400");
