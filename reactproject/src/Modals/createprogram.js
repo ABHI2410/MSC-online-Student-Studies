@@ -86,7 +86,7 @@ import LoginManager from '../Services';
         // Handle the successful login, e.g., redirect to another page
         history.push("/courseList");
       };
-      loginManager.post('/v1/program',Data, callback, errorCallback);
+      loginManager.post('http://127.0.0.1:8000/api/v1/program',Data, callback, errorCallback);
 
   };
 

@@ -93,7 +93,7 @@ class CustomerController extends Controller
         $user->customer()->save($customer);
     
         $customer = customer::where('userID', $customer_id)->first();
-        if ($request->role != 'Admin'){
+        if ($request->role != 'Admin' && $request->role != 'QA' && $request->role != 'Program Coordinator'){
             $registrationcode = registrationcode::where('code', $request->registrationCode)->first();
 
             $user_program = new user_program([

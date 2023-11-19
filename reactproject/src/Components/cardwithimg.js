@@ -42,6 +42,9 @@ function ImgMediaCard(props) {
         <Typography variant="body2" color="text.secondary">
           {props.Detail2}
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {props.Detail3}
+        </Typography>
       </CardContent>
       <CardActions sx={{justifyContent: 'flex-end'}}>
         <IconButton aria-label="assignments">

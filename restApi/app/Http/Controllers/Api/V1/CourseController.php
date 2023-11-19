@@ -11,8 +11,10 @@ use App\Http\Requests\UpdatecourseRequest;
 use App\Filter\V1\CourseQuery;
 use App\Http\Resources\V1\CourseResource;
 use App\Http\Resources\V1\CourseCollection;
+use App\Http\Resources\V1\CustomerResource;
+use App\Models\user_course;
 use Illuminate\Support\Facades\Storage;
-
+use App\Http\Resources\V1\UserCourseResource;
 class CourseController extends Controller
 {
     /**
@@ -22,12 +24,18 @@ class CourseController extends Controller
     {
         $filter = new CourseQuery();
         $queryItems = $filter->transform($request);
-
-        if (count($queryItems) == 0){
-            return new CourseCollection(course::paginate());
-        } else {
-            return new CourseCollection(course::where($queryItems)->paginate());
-        }
+        $courseList  = user_course::where($queryItems)->where('deleted',0)->get();
+        $courseList->map(function ($userCourse) {
+            $userCourse->customer = new CustomerResource($userCourse->customer); // Replace 'customer_id' with related 'customer' data
+            $userCourse->course = new CourseResource ($userCourse->course);     // Replace 'course_id' with related 'course' data
+            
+        });
+        return $courseList;
+        // if (count($queryItems) == 0){
+        //     return new CourseCollection(course::paginate());
+        // } else {
+        //     return new CourseCollection(course::where($queryItems)->paginate());
+        // }
     }
 
     /**
@@ -76,6 +84,13 @@ class CourseController extends Controller
         $requestData['syllabus'] = $filePath;
         $course = new course($requestData);
         $course->save();
+
+        $user_course = new user_course([
+            'erolled_type' => 'Teacher',
+            'customer_id' => $requestData['customer_id'],
+            'course_id' => $course->id,
+        ]);
+        $user_course->save();
 
         return new CourseResource($course);
 

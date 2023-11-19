@@ -139,9 +139,14 @@ import Autocomplete from '@mui/material/Autocomplete';
       formData.append('payload',payload);
       formData.append('syllabus',file);
       console.log("trying to make a fetch request");
-      loginManager.post('/v1/courses',formData, callback, errorCallback);
+      let response = loginManager.post('/v1/courses',formData, callback, errorCallback);
+      if (response){
+        history.push("/courseList");
+      }else{
+        throw new Error("AN error occured");
+      }
 
-  };
+    };
 
 
   const [program,setProgram] = React.useState([]);
@@ -151,7 +156,7 @@ import Autocomplete from '@mui/material/Autocomplete';
         const loginManager = LoginManager.getLoginManager()
         const response = await loginManager.get('/v1/program',[]);
         // const extractedData = response.data.map(label: name,id:);
-        const transformedData = response.data.map(({ id, name }) => ({ id, label: name }));
+        const transformedData = response.data.map(({ id, name, type }) => ({ id, label: name+'-'+type }));
         setProgram(transformedData);
       } catch (error) {
         console.error(error);
