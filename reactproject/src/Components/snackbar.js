@@ -17,7 +17,6 @@ export default function PositionedSnackbar(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { vertical, horizontal } = state;
-  console.log(props,state)
   const handleClose = () => {
     setState({ ...state, open: false });
     props.onClose();

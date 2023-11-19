@@ -8,27 +8,36 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
+import LoginManager from '../Services';
 
-const coursesData = [
-    {
-      ImgUrl: logo,
-      Name: 'Web Data Management',
-      Detail1: 'Prof. John Doe',
-      Detail2: 'TT 3:00pm to 4:20pm',
-    },
-    {
-        ImgUrl: logo,
-        Name: 'Discreet Mathematics',
-        Detail1: 'Prof. Jane Doe',
-        Detail2: 'TT 12:00pm to 1:20pm',
-      },
-  ];
+
+
   function Courses() {
+
+    const [coursesData,setCoursesData] = React.useState([]);
+    React.useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const loginManager = LoginManager.getLoginManager()
+          var url = '/v1/courses?customer_id[eq]'+localStorage.getItem('LoginManager.id');
+          const response = await loginManager.get(url,[]);
+          // const extractedData = response.data.map(label: name,id:);
+          const transformedData = response.data.map(({ id, name }) => ({ id, label: name }));
+          setCoursesData(transformedData);
+        } catch (error) {
+          console.error(error);
+          // Handle error
+        }
+      };
+
+      fetchData();
+    }, []);
     const courseCards = coursesData.map((course, index) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
         <Link to="/course/dashboard">
         <ImgMediaCard
-          ImgUrl={course.ImgUrl}
+          ImgUrl={logo}
           Name={course.Name}
           Detail1={course.Detail1}
           Detail2={course.Detail2}
@@ -42,25 +51,35 @@ const coursesData = [
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4" align="center">
-                       
-                        <Button
+                    <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end' }}>
+                          <Link to='/'>
+                            <Button
                             variant="contained"
                             color="primary"
                             startIcon={<AddIcon />}
-                            sx={{ float: 'right' }} // Align button to the right
                             >
                                 Enroll Course
                             </Button>
+                            </Link>
                             <Link to='/createcourse'>
                               <Button
                               variant="contained"
                               color="primary"
                               startIcon={<AddIcon />}
-                              sx={{ float: 'right', marginRight: '10px'}} // Align button to the right
                               >
                                   Create Course
                               </Button>
                             </Link>
+                            <Link to='/createprogram'>
+                              <Button
+                              variant="contained"
+                              color="primary"
+                              startIcon={<AddIcon />}
+                              >
+                                  Create Program
+                              </Button>
+                            </Link>
+                          </Stack>
                     </Typography>
                 </Grid>
                 {courseCards}

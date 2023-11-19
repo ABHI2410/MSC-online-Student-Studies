@@ -14,6 +14,9 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import { Link } from 'react-router-dom';
 export function CheckboxList() {
 
     return (
@@ -89,7 +92,8 @@ export function CheckboxList() {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 >
-                <Typography>Chapter 1</Typography>
+                  <Typography sx={{padding:"6px 16px"}}>Chapter 1</Typography>
+                  <Button variant="Text" sx={{marginLeft:"auto"}}>Add Chapter</Button>
                 </AccordionSummary>
                 <AccordionDetails>
                     <CheckboxList/>
@@ -107,6 +111,17 @@ export function CheckboxList() {
                     <CheckboxList/>
                 </AccordionDetails>
             </Accordion>
+            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+            <Link to='/'>
+                <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                >
+                    Add Section
+                </Button>
+            </Link>
+            </div>
         </Box>
     )
   }

@@ -11,7 +11,7 @@ class StoreregistrationcodeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreregistrationcodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
         ];
+    }
+
+    protected function prepareForValidation(){
+        $this->merge([
+        ]);
     }
 }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -15,9 +14,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DrawerAppBar from '../Components/plainnavbar'
-import PositionedSnackbar from '../Components/snackbar';
-import UserContext from '../UserContext';
+import ResponsiveAppBar from '../Components/header'
+import LoginManager from '../Services';
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,10 +33,6 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 function Login() {
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarStatus, setSnackbarStatus] = React.useState('success');
-  const [snackbarMessage, setSnackbarMessage] = React.useState('');
-  const { user, setUser } = useContext(UserContext);
   const history = useHistory();
 
   const [userData, setUserData] = useState({
@@ -54,74 +49,25 @@ function Login() {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try{
-      const response = await fetch('http://localhost/index.php/api', {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-          'Content-Type': 'application/json',
-      },
-        body: JSON.stringify(userData), // body data type must match "Content-Type" header
-      });
-      const statusCode = response.status;
-      const { access_token, refresh_token, role, id, first, last } = response.json();
-      console.log(statusCode);
-      if (statusCode === 200) {
-        setSnackbarStatus('success');
-        setSnackbarMessage('User registration successful');
-        setSnackbarOpen(true);
-        const updatedUser = { ...user, role: role };
-        // Set the updated user object using setUser
-        setUser(updatedUser);
-        localStorage.setItem('access_token', access_token);
-        localStorage.setItem('refresh_token', refresh_token);
-        localStorage.setItem('id', id);
-        localStorage.setItem('firstName', first);
-        localStorage.setItem('lastName', last);
-        history.push('/courseList');
-      } else if (statusCode === 400) {
-        console.log("entred 400");
-        setSnackbarStatus('error');
-        setSnackbarMessage('Invalid Credentials');
-        setSnackbarOpen(true);
-      }else if (statusCode === 404) {
-        setSnackbarStatus('info');
-        setSnackbarMessage('No Data Provided');
-        setSnackbarOpen(true);
-      }else if (statusCode === 422) {
-        console.log("entred 422");
-        setSnackbarStatus('error');
-        setSnackbarMessage('Cant Process the requet');
-        setSnackbarOpen(true);
-      }else if (statusCode === 500) {
-        console.log("entred 500");
-        setSnackbarStatus('error');
-        setSnackbarMessage('Internal server Error');
-        setSnackbarOpen(true);
-      }else {
-        // Handle other statuses or errors
-        console.log("entred else");
-        setSnackbarStatus('error');
-        setSnackbarMessage('An error occurred during registration');
-        setSnackbarOpen(true);
-      }
-    } catch (error) {
-      console.log(error);
-      setSnackbarStatus('error');
-      setSnackbarMessage('An error occurred during registration');
-      setSnackbarOpen(true);
-  }
-  }
+    const loginManager = LoginManager.getLoginManager()
+    const errorCallback = (error) => {
+      console.error(error);
+      // Handle the error, e.g., display an error message
+    };
 
+    const callback = (data) => {
+      console.log("response",data);
+      // Handle the successful login, e.g., redirect to another page
+      history.push("/courseList");
+    };
 
-    
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false); // Reset the snackbarOpen state to false
-  };
+    loginManager.loginWithCreds(userData.EmailID, userData.Password, callback, errorCallback);
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <DrawerAppBar/>
+        <ResponsiveAppBar/>
         <CssBaseline />
         <Box
           sx={{
@@ -188,12 +134,12 @@ function Login() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-      <PositionedSnackbar
+      {/* <PositionedSnackbar
         open={snackbarOpen}
         status={snackbarStatus}
         message={snackbarMessage}
         onClose={handleSnackbarClose}
-      />
+      /> */}
     </ThemeProvider>
   );
 }

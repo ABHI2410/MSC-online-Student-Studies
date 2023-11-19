@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->bigInteger("userID");
+            $table -> string("emailID");
             $table->string("firstName");
             $table->string("lastName");
             $table->enum("role",['Student', 'Instructor', 'QA', 'Program Coordinator', 'Admin']);
@@ -23,13 +24,13 @@ return new class extends Migration
             $table->enum("term",['Fall', 'Spring', 'Summer']);
             $table->string("enrollYear");
             $table->string("phoneNo");
-            $table->text("address");
-            $table->text("aboutMe");
-            $table->string("linkedIn");
-            $table->string("github");
-            $table->string("instagram");
-            $table->string("twitter");
-            $table->string("facebook");
+            $table->text("address")->nullable();
+            $table->text("aboutMe")->nullable();
+            $table->string("linkedIn")->nullable();
+            $table->string("github")->nullable();
+            $table->string("instagram")->nullable();
+            $table->string("twitter")->nullable();
+            $table->string("facebook")->nullable();
             $table->boolean("deleted")->default(0);
             $table->timestamps();
 

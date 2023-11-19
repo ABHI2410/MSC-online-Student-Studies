@@ -8,6 +8,13 @@ import CourseSyllabus from "./Modals/coursesyllabus";
 import CourseModules from "./Modals/coursemodules";
 import CoursePeople from "./Modals/coursePeople";
 import CreateCourses from "./Modals/createcourses";
+import CreateProgram from "./Modals/createprogram";
+import RegistrationCode from "./Modals/registrationcode";
+import ChatBox from "./Modals/chat.js";
+import GradePage from "./Modals/grade.js";
+import AssignmentPage from "./Modals/AssignmentList.js";
+import AssignmentDetails from "./Modals/AssignemntSubmission.js";
+
 export const Routes = () => {
     return (
         <Router>
@@ -38,6 +45,24 @@ export const Routes = () => {
                 </Route>
                 <Route path="/createcourse">
                     <CreateCourses/>
+                </Route>
+                <Route path="/createprogram">
+                    <CreateProgram/>
+                </Route>
+                <Route path="/registrationcode">
+                    <RegistrationCode/>
+                </Route>
+                <Route path="/course/chatbox">
+                    <ChatBox/>
+                </Route>
+                <Route path="/course/grade">
+                    <GradePage/>
+                </Route>
+                <Route path="/course/assignment">
+                    <AssignmentPage/>
+                </Route>
+                <Route path="/course/assignmentdetails">
+                    <AssignmentDetails/>
                 </Route>
             </Switch>
         </Router>

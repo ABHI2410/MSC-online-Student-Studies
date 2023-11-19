@@ -1,20 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\Api\V1;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Carbon\Carbon;
 use App\Models\course;
+use App\Models\customer;
 use App\Http\Requests\StorecourseRequest;
 use App\Http\Requests\UpdatecourseRequest;
+use App\Filter\V1\CourseQuery;
+use App\Http\Resources\V1\CourseResource;
+use App\Http\Resources\V1\CourseCollection;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filter = new CourseQuery();
+        $queryItems = $filter->transform($request);
+
+        if (count($queryItems) == 0){
+            return new CourseCollection(course::paginate());
+        } else {
+            return new CourseCollection(course::where($queryItems)->paginate());
+        }
     }
 
     /**
@@ -30,7 +43,42 @@ class CourseController extends Controller
      */
     public function store(StorecourseRequest $request)
     {
-        //
+        $requestData = $request->all();
+
+        
+        $requestData['customer_id'] = $request->customer_id;
+
+        $len = course::whereYear('created_at', now()->year)->count() + 1;
+        $courseID = 'C' . $requestData['credit'] . str_pad(strval($len), 4, '0', STR_PAD_LEFT);
+        $requestData['courseID'] = $courseID;
+
+        foreach ($requestData as $key => $value) {
+            if ($key === 'startDate' || $key === 'endDate') {
+                // Check if the key contains 'date'
+                $requestData[$key] = Carbon::parse($value);
+            } elseif ($key === 'timeStart' || $key === 'timeEnd') {
+                // Check if the key contains 'time'
+                $requestData[$key] = Carbon::parse($value)->format('H:i:s');
+            }
+        }
+
+        if (isset($requestData['day']) && is_array($requestData['day'])) {
+            $requestData['day'] = implode(',', $requestData['day']);
+        }
+
+        $file = $request->file('syllabus');
+
+        // Store the file in the specified location
+        $fileName = $request->input('name') . '_syllabus.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('file/' . $request->input('name'), $fileName);
+
+        // Update the 'syllabus' field in the request data with the file path
+        $requestData['syllabus'] = $filePath;
+        $course = new course($requestData);
+        $course->save();
+
+        return new CourseResource($course);
+
     }
 
     /**

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->boolean('deleted')->default(0);
             $table->timestamps();
 
-            $table->foreignId('customer_id')->constrained("customers")->onDelete("cascade");
+            // $table->foreignId('customer_id')->constrained("customers")->onDelete("cascade");
         });
     }
 

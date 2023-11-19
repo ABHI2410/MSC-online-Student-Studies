@@ -26,6 +26,7 @@ class CustomerFactory extends Factory
         return [
             'user_id' => User::factory(),
             'userID' => $this->faker->numberBetween(202300000, 202399999),
+            'emailID' => $this->faker->email(),
             'firstName' => $this->faker->firstName(),
             'lastName' => $this->faker->lastName(),
             'role' => $role,

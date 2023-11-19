@@ -13,12 +13,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DrawerAppBar from '../Components/plainnavbar';
-import PositionedSnackbar from '../Components/snackbar';
+
 import { Select, MenuItem, InputLabel } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import ResponsiveAppBar from '../Components/header'
 
 
 function Copyright(props) {
@@ -39,11 +39,9 @@ const defaultTheme = createTheme();
 function Register() {
     const history = useHistory();
     const [selectedRole, setSelectedRole] = useState('');
-    const roles = ['Student', 'Instrutor', 'QA', 'Program Coordinator'];
+    const roles = ['Student', 'Instructor', 'QA', 'Program Coordinator', 'Admin'];
     const [date, setDate] = React.useState(null);
-    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-    const [snackbarStatus, setSnackbarStatus] = React.useState('success');
-    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+
     const handleRoleChange = (event) => {
         setSelectedRole(event.target.value);
         setUserData((prevUserData) => ({
@@ -51,9 +49,6 @@ function Register() {
           Role: event.target.value,
         }));
 
-    };
-    const handleSnackbarClose = () => {
-      setSnackbarOpen(false); // Reset the snackbarOpen state to false
     };
     const hadleDateChange = (date) => {
       setDate(date) 
@@ -79,11 +74,20 @@ function Register() {
         [name]: value,
       }));
     };
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarStatus, setSnackbarStatus] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const updateSnackbar = (open, status, message) => {
+      setSnackbarOpen(open);
+      setSnackbarStatus(status);
+      setSnackbarMessage(message);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         
         try{
-          const response = await fetch('http://localhost/index.php/user/create', {
+          const response = await fetch('http://127.0.0.1:8000/api/v1/customer', {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
               'Content-Type': 'application/json',
@@ -91,48 +95,29 @@ function Register() {
             body: JSON.stringify(userData), // body data type must match "Content-Type" header
           });
           const statusCode = response.status;
-          if (statusCode === 200) {
-            setSnackbarStatus('success');
-            setSnackbarMessage('User registration successful');
-            setSnackbarOpen(true);
+          if (statusCode === 201) {
+            updateSnackbar(true, 'success', 'Registration Sucessfull.');
             history.push('/login');
-          } else if (statusCode === 400) {
-            setSnackbarStatus('error');
-            setSnackbarMessage('Invalid Data Provided');
-            setSnackbarOpen(true);
-          }else if (statusCode === 404) {
-            setSnackbarStatus('info');
-            setSnackbarMessage('No Data Provided');
-            setSnackbarOpen(true);
-          }else if (statusCode === 422) {
-            setSnackbarStatus('error');
-            setSnackbarMessage('Cant Process the requet');
-            setSnackbarOpen(true);
-          }else if (statusCode === 500) {
-            setSnackbarStatus('error');
-            setSnackbarMessage('Internal server Error');
-            setSnackbarOpen(true);
           }else {
-            // Handle other statuses or errors
-            setSnackbarStatus('error');
-            setSnackbarMessage('An error occurred during registration');
-            setSnackbarOpen(true);
+            updateSnackbar(true, 'error', 'Error occurred during registration.');
           }
         } catch (error) {
-          setSnackbarStatus('error');
-          setSnackbarMessage('An error occurred during registration');
-          setSnackbarOpen(true);
+          updateSnackbar(true, 'error', 'Error occurred during registration.');
       }
     };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <DrawerAppBar />
+        <ResponsiveAppBar 
+          snackbarOpen={snackbarOpen}
+          snackbarStatus={snackbarStatus}
+          snackbarMessage={snackbarMessage}
+          updateSnackbar={updateSnackbar}
+        />
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 12,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -259,12 +244,12 @@ function Register() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-      <PositionedSnackbar
+      {/* <PositionedSnackbar
         open={snackbarOpen}
         status={snackbarStatus}
         message={snackbarMessage}
         onClose={handleSnackbarClose}
-      />
+      /> */}
     </ThemeProvider>
 
   );

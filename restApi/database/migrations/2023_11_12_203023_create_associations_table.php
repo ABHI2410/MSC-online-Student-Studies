@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('associations', function (Blueprint $table) {
             $table->id();
             $table->enum('type',['Basics', 'Specialty', 'Breadth','Additional']);
-            $table->enum('role',['Student','Teacher','Teaching Assistant']);
             $table->boolean("deleted")->default(0);
             $table->timestamps();
-
-            $table->foreignId('customer_id')->constrained("customers")->onDelete("cascade");
 
             $table->foreignId('program_id')->constrained("programs")->onDelete("cascade");
 

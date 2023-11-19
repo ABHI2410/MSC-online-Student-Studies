@@ -4,17 +4,31 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 
 use App\Models\program;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Http\Requests\StoreprogramRequest;
 use App\Http\Requests\UpdateprogramRequest;
+use App\Http\Resources\V1\ProgramResource;
+use App\Http\Resources\V1\ProgramCollection;
+use App\Filter\V1\ProgramQuery;
 
 class ProgramController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filter = new ProgramQuery();
+        $queryItems = $filter->transform($request);
+
+        if (count($queryItems) == 0){
+            return new ProgramCollection(program::paginate());
+        } else {
+            return new ProgramCollection(program::where($queryItems)->paginate());
+        }
+        
+
     }
 
     /**
@@ -22,7 +36,7 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -31,6 +45,10 @@ class ProgramController extends Controller
     public function store(StoreprogramRequest $request)
     {
         //
+        $requestWithoutField = $request->except('startDate');
+        $startDate = Carbon::parse($request->startDate);
+        $request->merge(['startDate' => $startDate]);
+        return new ProgramResource(program::create($request->all()));
     }
 
     /**

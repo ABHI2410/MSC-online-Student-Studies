@@ -11,15 +11,19 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import CloseIcon from '@mui/icons-material/Close';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { useLoginStatus } from '../Auth';
 import Avatar from '@mui/material/Avatar';
 import AdbIcon from '@mui/icons-material/Adb';
 import profile from '../images/man.svg';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import PositionedSnackbar from '../Components/snackbar';
 import "../CSS/main.css"
 
 
 const drawerWidth = 100;
+const navItems = ['Services','Blog', 'About', 'Contact us'];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -70,9 +74,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-function ResponsiveAppBar({content}) {
+function ResponsiveAppBar({ sbOpen, sbStatus, sbMessage, content}) {
   const [open, setOpen] = React.useState(false);
-  useLoginStatus();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -81,8 +84,34 @@ function ResponsiveAppBar({content}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const [isVisible, setIsVisible] = React.useState(false);
 
+  const handleClick = () => {
+    setIsVisible(!isVisible);
+  };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false); // Reset the snackbarOpen state to false
+  };
+
+  const drawer = (
+    <Box sx={{ textAlign: 'center', display: { xs: isVisible ? 'block': 'none', sm: 'none' } }}>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const [snackbarOpen, setSnackbarOpen] = React.useState(sbOpen);
+  const snackbarStatus = sbStatus;
+  const snackbarMessage = sbMessage;
   return (
     <Box sx={{ display: 'flex', height: "100%" }}>
       <CssBaseline />
@@ -115,12 +144,26 @@ function ResponsiveAppBar({content}) {
           >
             MSC
           </Typography>
-          <Box sx={{ flexGrow: 0, marginLeft: 'auto'}}>
-            <IconButton sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src={profile} style={{border: "1px solid white" }}/>
-            </IconButton>  
+          <Box sx={{marginLeft: 'auto', display: 'flex'}}>
+            <Box sx={{ display: { xs: 'none', sm: 'block' }}}>
+              {navItems.map((item) => (
+                <Button key={item} sx={{ color: '#fff' }}>
+                  {item}
+                </Button>
+              ))}
+            </Box>
+            <Box sx={{ flexGrow: 0}} onClick={handleClick}>
+              <IconButton sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src={profile} style={{border: "1px solid white" }}/>
+              </IconButton>  
+            </Box>
+            <Typography variant="captions" sx={{paddingRight: '15px'}}>
+              {sessionStorage.getItem('name')}
+            </Typography>
           </Box>
+          
         </Toolbar>
+        {drawer}
         
       </AppBar>
     <Drawer
@@ -168,8 +211,7 @@ function ResponsiveAppBar({content}) {
                 <ListItemText primary={'Logout'} primaryTypographyProps={{fontSize: "10px", textAlign: "center"}}/>
             </ListItem>
         </List>
-      </Box>
-      
+      </Box>      
     </Drawer>
     <Main open={open} >
       <DrawerHeader />
