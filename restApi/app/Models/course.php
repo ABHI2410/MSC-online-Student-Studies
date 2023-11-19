@@ -26,4 +26,24 @@ class course extends Model
             'program_id',
     ];
 
+    public function customer(){
+        return $this->belongsTo(customer::class);
+    }
+
+    public function program(){
+        return $this->belongsTo(program::class);
+    }
+
+    public function assignment(){
+        return $this->hasMany(assignment::class);
+    }
+
+    public function exam(){
+        return $this->hasMany(exam::class);
+    }
+
+    public function modules(){
+        return $this->hasMany(modules::class);
+    }
+
 }

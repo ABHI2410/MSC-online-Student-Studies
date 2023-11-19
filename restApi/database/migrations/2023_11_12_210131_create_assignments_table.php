@@ -21,6 +21,13 @@ return new class extends Migration
             $table->dateTime('availableUntill');
             $table->text('files');
             $table->integer('attemptsAllowed')->default(-1);
+            $table->float("maxScore");
+            $table->float("highestScore");
+            $table->float("lowestScore");
+            $table->float("meanScore");
+            $table->float("medianScore");
+            $table->float("upperQuantileScore");
+            $table->float("lowerQuantileScore");
             $table->boolean("deleted")->default(0);
             $table->timestamps();
 

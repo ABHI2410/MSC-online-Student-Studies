@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class feedback extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'answer',
+        'review_id'
+    ];
+    public function review(){
+        return $this->belongsTo(review::class);
+    }
 }

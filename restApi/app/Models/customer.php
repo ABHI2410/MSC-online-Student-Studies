@@ -29,4 +29,21 @@ class customer extends Model
     public function program(){
         return $this->hasMany(program::class);
     }
+
+    public function answerSubmission(){
+        return $this->hasMany(answerSubmission::class);
+    }
+
+    public function assignment(){
+        return $this->hasMany(assignment::class);
+    }
+
+    public function chat(){
+        return $this->hasMany(chat::class);
+    }
+
+    public function exam(){
+        return $this->hasMany(exam::class);
+    }
+
 }

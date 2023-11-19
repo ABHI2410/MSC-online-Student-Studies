@@ -7,11 +7,17 @@ import { FileUploader } from "react-drag-drop-files";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/Download';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
   export function DetailofAssignment(){
     const rectangle = <Box component="span">
         <Typography variant="h4" color="text">
-                                80/100
+                                -/100
                         </Typography>
     </Box>;
     const fileTypes = ["DOC", "DOCX", "PDF"];
@@ -67,16 +73,19 @@ import EditIcon from '@mui/icons-material/Edit';
                         <FileUploader handleChange={handleChange} name="file" types={fileTypes} />
                     </Grid>
                 </Grid>
+                
             </Paper>
-                <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end', margin:"20px"}}>
-                            <Button
-                            variant="contained"
-                            color="primary"
-                            >
-                                Submit
-                            </Button>
-                            
-                          </Stack>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end', margin:"20px"}}>
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    >
+                        Submit
+                    </Button>
+                    
+                    </Stack>
+                
+            
                 
         </Box>
     )

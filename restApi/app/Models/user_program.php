@@ -10,4 +10,11 @@ class user_program extends Model
     use HasFactory;
 
     protected $fillable = ['customer_id', 'program_id'];
+
+    public function customer(){
+        return $this->belongsTo(customer::class);
+    }
+    public function program(){
+        return $this->belongsTo(program::class);
+    }
 }

@@ -14,6 +14,7 @@ import ChatBox from "./Modals/chat.js";
 import GradePage from "./Modals/grade.js";
 import AssignmentPage from "./Modals/AssignmentList.js";
 import AssignmentDetails from "./Modals/AssignemntSubmission.js";
+import AssignmentDetailsList from "./Modals/AssignemntSubmissionList.js";
 
 export const Routes = () => {
     return (
@@ -63,6 +64,9 @@ export const Routes = () => {
                 </Route>
                 <Route path="/course/assignmentdetails">
                     <AssignmentDetails/>
+                </Route>
+                <Route path="/course/assignmentdetailslist">
+                    <AssignmentDetailsList/>
                 </Route>
             </Switch>
         </Router>

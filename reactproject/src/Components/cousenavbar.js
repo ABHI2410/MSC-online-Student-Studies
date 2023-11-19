@@ -54,23 +54,33 @@ export default function ClippedDrawer(props) {
                 </ListItem>
                 </Link>
                 <Divider/>
+                
+                <Link to="/course/assignment" style={{textDecoration: "none",color: "#000000"}}>
                 <ListItem key="Assignments" disablePadding>
-                  <ListItemButton sx={{ textAlign: "center" }} selected={props.value === 'Assignments'}>
+                  <ListItemButton sx={{ textAlign: "center" }} selected={props.value === 'Assignment'}>
                     <ListItemText primary="Assignments" />
                   </ListItemButton>
                 </ListItem>
+                </Link>
                 <Divider/>
+
+                <Link to="/course/grade" style={{textDecoration: "none",color: "#000000"}}>
                 <ListItem key="Grades" disablePadding>
-                  <ListItemButton sx={{ textAlign: "center" }} selected={props.value === 'Grades'}>
+                  <ListItemButton sx={{ textAlign: "center" }} selected={props.value === 'Grade'}>
                     <ListItemText primary="Grades" />
                   </ListItemButton>
                 </ListItem>
+                </Link>
                 <Divider/>
+
+                <Link to="/course/chatbox" style={{textDecoration: "none",color: "#000000"}}>
                 <ListItem key="Discussion" disablePadding>
                   <ListItemButton sx={{ textAlign: "center" }} selected={props.value === 'Discussion'}>
                     <ListItemText primary="Discussion" />
                   </ListItemButton>
                 </ListItem>
+                </Link>
+
                 <Divider/>
                 <Link to="/course/people" style={{textDecoration: "none",color: "#000000"}}>
                 <ListItem key="People" disablePadding>

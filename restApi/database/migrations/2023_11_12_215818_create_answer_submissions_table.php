@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('answer_submissions', function (Blueprint $table) {
             $table->id();
             $table->text("answer");
+            $table->float('grade');
             $table->boolean("deleted")->default(0);
             $table->timestamps();
-
             $table->foreignId('customer_id')->constrained("customers")->onDelete("cascade");
             $table->foreignId('question_id')->constrained("questions")->onDelete("cascade");
         });
