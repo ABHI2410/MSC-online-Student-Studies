@@ -23,7 +23,7 @@ class AuthController extends Controller
             $token = $user->createToken('authToken',['create','update'])->plainTextToken;
             $message = "Authentication Successfull";
             $customer = customer::where('user_id',$user->id)->first();
-            return response()->json(['token' => $token, 'id' => $customer->id, 'name'=>$user->name], 200);
+            return response()->json(['token' => $token, 'id' => $customer->id, 'name'=>$user->name, 'role'=>$customer->role], 200);
         }else{
             $message = "invalid email or password";
         }

@@ -7,6 +7,7 @@ use App\Filter\Query;
 
 class CustomerQuery extends Query{
     protected $allowedParms = [
+        'id' => ['eq'],
         'userID' => ['eq'],
         'firstName' => ['eq','in','like'],
         'lastName' => ['eq','in','like'],

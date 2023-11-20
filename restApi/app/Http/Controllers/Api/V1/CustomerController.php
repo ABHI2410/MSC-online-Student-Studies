@@ -24,7 +24,7 @@ class CustomerController extends Controller
     {
         $filter = new CustomerQuery();
         $queryItems = $filter->transform($request);
-
+        print_r($queryItems);
         if (count($queryItems) == 0){
             return new CustomerCollection(customer::paginate());
         } else {

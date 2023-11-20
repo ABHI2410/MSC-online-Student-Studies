@@ -15,6 +15,7 @@ use App\Http\Resources\V1\CustomerResource;
 use App\Models\user_course;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\V1\UserCourseResource;
+use App\Filter\V1\UserCourseQuery;
 class CourseController extends Controller
 {
     /**
@@ -22,7 +23,7 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = new CourseQuery();
+        $filter = new UserCourseQuery();
         $queryItems = $filter->transform($request);
         $courseList  = user_course::where($queryItems)->where('deleted',0)->get();
         $courseList->map(function ($userCourse) {

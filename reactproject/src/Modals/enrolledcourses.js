@@ -26,8 +26,9 @@ function Courses() {
       try {
         const loginManager = LoginManager.getLoginManager();
         var url =
-          "/v1/courses?customer_id[eq]" +
+          "/v1/courses?customerId[eq]=" +
           localStorage.getItem("LoginManager.id");
+        console.log(url);
         const response = await loginManager.get(url, []);
         // const extractedData = response.data.map(label: name,id:);
         // const transformedData = response.data.map(({ id, name }) => ({ id, label: name }));
@@ -51,12 +52,46 @@ function Courses() {
       </Box>
     );
   } else if (!isLoading && coursesData.length === 0) {
-    courseCards = <p>No courses available.</p>;
+    courseCards = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Not enrolled in any course.</Typography>
+      </Box>
+    );
+    if (localStorage.getItem("LoginManager.role") === "Student") {
+      enrollmentButton = (
+        <Link to="/">
+          <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+            Enroll Course
+          </Button>
+        </Link>
+      );
+    }
+    if (localStorage.getItem("LoginManager.role") === "Instructor") {
+      createCourseButton = (
+        <Link to="/createcourse">
+          <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+            Create Course
+          </Button>
+        </Link>
+      );
+    }
+
+    if (localStorage.getItem("LoginManager.role") === "Program Coordinator") {
+      createProgramButton = (
+        <Link to="/createprogram">
+          <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+            Create Program
+          </Button>
+        </Link>
+      );
+    }
   } else if (!isLoading && coursesData.length !== 0) {
     courseCards = coursesData.map((coursesData, index) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
         <Link
-          to="/course/dashboard"
+          to={{
+            pathname: "/course/dashboard",
+          }}
           style={{ textDecoration: "none", color: "#000000" }}
         >
           <ImgMediaCard
@@ -75,11 +110,7 @@ function Courses() {
         </Link>
       </Grid>
     ));
-
-    if (
-      coursesData.length !== 0 &&
-      coursesData[0]["customer"]["role"] === "Student"
-    ) {
+    if (localStorage.getItem("LoginManager.role") === "Student") {
       enrollmentButton = (
         <Link to="/">
           <Button variant="contained" color="primary" startIcon={<AddIcon />}>
@@ -88,10 +119,7 @@ function Courses() {
         </Link>
       );
     }
-    if (
-      coursesData.length !== 0 &&
-      coursesData[0]["customer"]["role"] === "Instructor"
-    ) {
+    if (localStorage.getItem("LoginManager.role") === "Instructor") {
       createCourseButton = (
         <Link to="/createcourse">
           <Button variant="contained" color="primary" startIcon={<AddIcon />}>
@@ -101,10 +129,7 @@ function Courses() {
       );
     }
 
-    if (
-      coursesData.length !== 0 &&
-      coursesData[0]["customer"]["role"] === "Program Coordinator"
-    ) {
+    if (localStorage.getItem("LoginManager.role") === "Program Coordinator") {
       createProgramButton = (
         <Link to="/createprogram">
           <Button variant="contained" color="primary" startIcon={<AddIcon />}>

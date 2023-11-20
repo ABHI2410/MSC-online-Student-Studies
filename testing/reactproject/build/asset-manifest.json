@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e443351c.css",
+    "main.js": "/static/js/main.861da46a.js",
+    "static/js/988.925e1074.chunk.js": "/static/js/988.925e1074.chunk.js",
+    "static/media/MSC-logos_white.png": "/static/media/MSC-logos_white.86281be7f219022ef007.png",
+    "static/media/man.svg": "/static/media/man.3df09ff780e6cd613c0ddb9ba756ac71.svg",
+    "index.html": "/index.html",
+    "main.e443351c.css.map": "/static/css/main.e443351c.css.map",
+    "main.861da46a.js.map": "/static/js/main.861da46a.js.map",
+    "988.925e1074.chunk.js.map": "/static/js/988.925e1074.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e443351c.css",
+    "static/js/main.861da46a.js"
+  ]
+}

@@ -32,7 +32,6 @@ class Query{
 
         foreach ($this->allowedParms as $param=>$operators){
             $query = $request->query($param);
-
             if(!isset($query)){
                 continue;
             }
@@ -43,7 +42,6 @@ class Query{
                 }
             }
         }
-
         return $eloQuery;
     }
 }
