@@ -29,6 +29,7 @@ class Query{
 
     public function transform(Request $request){
         $eloQuery = [];
+        $eloQuery[] = ['deleted', '=', 0];
 
         foreach ($this->allowedParms as $param=>$operators){
             $query = $request->query($param);

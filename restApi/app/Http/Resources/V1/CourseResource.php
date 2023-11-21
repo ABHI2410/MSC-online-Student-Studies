@@ -29,6 +29,7 @@ class CourseResource extends JsonResource
             'credit' => $this->credit,
             'textbook' => $this->textbook,
             'syllabus' => $this->syllabus,
+            'instructor' => $this->customer_id,
             
         ];
     }

@@ -94,7 +94,7 @@ class LoginManager {
   }
 
   authfetch(url, options = {}) {
-    console.log(url.options);
+    // console.log(url.options);
     var newUrl = url;
     if (!url.startsWith("http")) {
       newUrl = apiHost + url;
@@ -128,17 +128,27 @@ class LoginManager {
   }
   async getJson(fetchObject) {
     let response = await fetchObject;
-    let res = null;
+
     if (response.status === 401) {
-      res = "RELOGIN";
-    } else {
-      try {
-        res = await response.json();
-      } catch (error) {
-        res = "RELOGIN";
-      }
+      return "RELOGIN";
     }
-    return res;
+
+    if (response.ok) {
+      const contentType = response.headers.get("content-type");
+
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          return await response.json();
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      } else {
+        return await response.blob(); // Adjust this part based on your file handling logic
+      }
+    } else {
+      console.error("Error fetching file:", response.statusText);
+      return null;
+    }
   }
 
   async get(url) {
@@ -146,7 +156,6 @@ class LoginManager {
     if (res === "RELOGIN") {
       this.logout();
     } else {
-      console.log(res);
       return res;
     }
   }
@@ -182,7 +191,6 @@ class LoginManager {
     if (res === "RELOGIN") {
       this.logout();
     } else {
-      console.log(res);
       return res;
     }
   }

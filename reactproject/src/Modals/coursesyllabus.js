@@ -1,137 +1,168 @@
-import * as React from 'react';
-import ResponsiveAppBar from '../Components/header'
-import ClippedDrawer from '../Components/cousenavbar';
-import Divider from '@mui/material/Divider';
-import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Done from '@mui/icons-material/Done';
-import Pending from '@mui/icons-material/Pending';
-  export function Detailofcontent(){
-    return(
-        <Box container sx={{padding: "20px"}}>
-            <Typography variant="h4" color="text" sx={{padding: "20px"}}>
-                        Syllabus
+import * as React from "react";
+import ResponsiveAppBar from "../Components/header";
+import ClippedDrawer from "../Components/cousenavbar";
+import Divider from "@mui/material/Divider";
+import { Box, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import LoginManager from "../Services";
+import history from "../history";
+import Stack from "@mui/material/Stack";
+import LinearProgress from "@mui/material/LinearProgress";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import IconButton from "@mui/material/IconButton";
+import { PdfViewer } from "../Components/filehandling";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+
+export function Detailofcontent(props) {
+  const coursesData = props.data;
+  const [fileData, setFileData] = useState(null);
+  const [blobFile, setBlobFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  var renderData = null;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const loginManager = LoginManager.getLoginManager();
+        // console.log(loginManager.constructor.loggedIn);
+        if (loginManager.constructor.loggedIn) {
+          var url =
+            "http://127.0.0.1:8000/api/v1/files/" + coursesData.data.syllabus;
+
+          const response = await loginManager.get(url, []);
+          setBlobFile(window.URL.createObjectURL(response));
+          setFileData(<PdfViewer PdfUrl={url} />);
+        } else {
+          history.push("./login");
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [coursesData.data.syllabus]);
+  const onDownloadClick = () => {
+    // Setting various property values
+    let alink = document.createElement("a");
+    alink.href = blobFile;
+    alink.download = coursesData.data.syllabus.split("/").pop();
+    alink.click();
+  };
+
+  if (isLoading) {
+    renderData = (
+      <Box sx={{ width: "100%", paddingTop: "20px" }}>
+        <LinearProgress />
+      </Box>
+    );
+  } else if (!isLoading && !fileData) {
+    renderData = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Course Data Not Found</Typography>
+      </Box>
+    );
+  } else {
+    renderData = (
+      <Box sx={{ padding: "20px", overflowY: "auto" }}>
+        <Grid
+          container
+          item
+          xs={12}
+          sx={{ padding: "10px" }}
+          alignItems="center"
+        >
+          <Grid item xs={8}>
+            <Typography variant="h4" color="text">
+              Syllabus
             </Typography>
-            <Grid container rowSpacing={3} sx={{marginBottom:"20px"}}>
-                <Grid item xs={4} >
-                    <Typography variant="h6" color="text.secondary">
-                        Content Name
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        Date
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        Status
-                    </Typography>
-                </Grid>  
-
-                <Grid item xs={4} >
-                    <Typography variant="h6" color="text.secondary">
-                        Chapter 1
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        22nd August 2023
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        <Done sx={{color:"#5cb85c", paddingTop:"10px"}}/>Completed
-                    </Typography>
-                </Grid> 
-
-                <Grid item xs={4} >
-                    <Typography variant="h6" color="text.secondary">
-                        Chapter 2
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        24th August 2023
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        <Done sx={{color:"#5cb85c", paddingTop:"10px"}}/>Completed
-                    </Typography>
-                </Grid> 
-                <Grid item xs={4} >
-                    <Typography variant="h6" color="text.secondary">
-                        Chapter 3
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        29th August 2023
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        <Done sx={{color:"#5cb85c", paddingTop:"10px"}}/>Completed
-                    </Typography>
-                </Grid>   
-
-                <Grid item xs={4} >
-                    <Typography variant="h6" color="text.secondary">
-                        Chapter 4
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        1st September 2023
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        <Pending sx={{color:"#fa113d", paddingTop:"10px"}}/>Pending
-                    </Typography>
-                </Grid>  
-
-                <Grid item xs={4} >
-                    <Typography variant="h6" color="text.secondary">
-                        Chapter 5
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        6th September 2023
-                    </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6" color="text.secondary">
-                        <Pending sx={{color:"#fa113d", paddingTop:"10px"}}/>Pending
-                    </Typography>
-                </Grid>              
-                
-            </Grid>
-                
-                <Divider/>
-                <Grid item xs={12} sx={{padding: "10px"}}>
-                    <Typography variant="body2" color="text.secondary">
-                        Recommended Textboox: Fundamentals of Web Development, 3rd Edition, Randy Connolly, Ricardo Hoar.
-                    </Typography>
-                </Grid>
-        </Box>
-    )
-  }
-  function Courses() {
-    return (
-        <ClippedDrawer content ={[<Detailofcontent key="content"/>]} course={"Web Data Mangement"} value = {"Syllabus"}/>
-      
+          </Grid>
+          <Grid item xs={4}>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: "flex-end" }}
+            >
+              <IconButton aria-label="delete" onClick={onDownloadClick}>
+                <FileDownloadIcon />
+              </IconButton>
+            </Stack>
+          </Grid>
+        </Grid>
+        {fileData}
+        <Divider />
+        <Grid item xs={12} sx={{ padding: "10px" }}>
+          <Typography variant="body2" color="text.secondary">
+            Recommended Textboox:{coursesData.data.textbook}
+          </Typography>
+        </Grid>
+      </Box>
     );
   }
-  
-  
+  return <div>{renderData}</div>;
+}
+function Courses(props) {
+  const [coursesData, setCoursesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  var renderData = null;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const loginManager = LoginManager.getLoginManager();
+        // console.log(loginManager.constructor.loggedIn);
+        if (loginManager.constructor.loggedIn) {
+          var url = "/v1/courses/" + props.id;
+
+          const response = await loginManager.get(url, []);
+
+          setCoursesData(response);
+        } else {
+          history.push("./login");
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      } finally {
+        setIsLoading(false);
+        // console.log(coursesData);
+      }
+    };
+
+    fetchData();
+  }, []);
+  if (isLoading) {
+    renderData = (
+      <Box sx={{ width: "100%", paddingTop: "20px" }}>
+        <LinearProgress />
+      </Box>
+    );
+  } else if (!isLoading && coursesData.length === 0) {
+    renderData = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Course Data Not Found</Typography>
+      </Box>
+    );
+  } else {
+    renderData = (
+      <ClippedDrawer
+        content={[<Detailofcontent key="content" data={coursesData} />]}
+        course={"Web Data Mangement"}
+        value={"Syllabus"}
+        id={props.id}
+      />
+    );
+  }
+
+  return <div>{renderData}</div>;
+}
+
 function CourseSyllabus() {
-  return (
-    <ResponsiveAppBar content={<Courses />} />
-    
-  );
+  const { courseId } = useParams();
+  return <ResponsiveAppBar content={<Courses id={courseId} />} />;
 }
 
 export default CourseSyllabus;

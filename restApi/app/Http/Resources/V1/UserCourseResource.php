@@ -15,7 +15,7 @@ class UserCourseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'role' => $this->erolled_type,
+            'erolled_type' => $this->erolled_type,
             'customer' => $this->customer,
             'course' => $this->course, 
         ];

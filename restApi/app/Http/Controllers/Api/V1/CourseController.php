@@ -16,6 +16,8 @@ use App\Models\user_course;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\V1\UserCourseResource;
 use App\Filter\V1\UserCourseQuery;
+use App\Http\Resources\V1\ProgramResource;
+
 class CourseController extends Controller
 {
     /**
@@ -23,20 +25,20 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = new UserCourseQuery();
+        $filter = new CourseQuery();
         $queryItems = $filter->transform($request);
-        $courseList  = user_course::where($queryItems)->where('deleted',0)->get();
+        $courseList  = course::where($queryItems)->where('deleted',0)->get();
         $courseList->map(function ($userCourse) {
             $userCourse->customer = new CustomerResource($userCourse->customer); // Replace 'customer_id' with related 'customer' data
-            $userCourse->course = new CourseResource ($userCourse->course);     // Replace 'course_id' with related 'course' data
+            $userCourse->program = new ProgramResource ($userCourse->program);     // Replace 'course_id' with related 'course' data
             
         });
         return $courseList;
-        // if (count($queryItems) == 0){
-        //     return new CourseCollection(course::paginate());
-        // } else {
-        //     return new CourseCollection(course::where($queryItems)->paginate());
-        // }
+        // var_dump($courseList->toJson());
+        // $customer = customer::where('id', $courseList->customer_id)->first();
+        // $courseList->customer_id = $customer;
+        
+        // return new CourseCollection($courseList);
     }
 
     /**
@@ -78,8 +80,8 @@ class CourseController extends Controller
         $file = $request->file('syllabus');
 
         // Store the file in the specified location
-        $fileName = $request->input('name') . '_syllabus.' . $file->getClientOriginalExtension();
-        $filePath = $file->storeAs('file/' . $request->input('name'), $fileName);
+        $fileName = strtolower($request->input('name')) . '_syllabus.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('file/' . strtolower($request->input('name')), $fileName);
 
         // Update the 'syllabus' field in the request data with the file path
         $requestData['syllabus'] = $filePath;
@@ -102,7 +104,9 @@ class CourseController extends Controller
      */
     public function show(course $course)
     {
-        //
+        $customer = customer::where('id', $course->customer_id)->first();
+        $course->customer_id = new CustomerResource ($customer);
+        return new CourseResource($course);
     }
 
     /**

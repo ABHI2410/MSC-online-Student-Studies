@@ -1,5 +1,6 @@
 {
   "name": "wdmproject",
+  "homepage": "msc.uta.cloud/register", 
   "version": "0.1.0",
   "private": true,
   "dependencies": {

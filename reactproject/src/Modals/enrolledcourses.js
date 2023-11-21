@@ -26,20 +26,18 @@ function Courses() {
       try {
         const loginManager = LoginManager.getLoginManager();
         var url =
-          "/v1/courses?customerId[eq]=" +
+          "/v1/usercourse?customerId[eq]=" +
           localStorage.getItem("LoginManager.id");
-        console.log(url);
+
         const response = await loginManager.get(url, []);
-        // const extractedData = response.data.map(label: name,id:);
-        // const transformedData = response.data.map(({ id, name }) => ({ id, label: name }));
+
         setCoursesData(response);
-        console.log(coursesData);
       } catch (error) {
         console.error(error);
         // Handle error
       } finally {
         setIsLoading(false);
-        console.log(coursesData);
+        // console.log(coursesData);
       }
     };
 
@@ -90,7 +88,7 @@ function Courses() {
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
         <Link
           to={{
-            pathname: "/course/dashboard",
+            pathname: `/course/${coursesData.course.id}/dashboard`,
           }}
           style={{ textDecoration: "none", color: "#000000" }}
         >
