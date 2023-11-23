@@ -11,7 +11,7 @@ class StoremodulesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,21 @@ class StoremodulesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required'],
+            'section'=> ['required'],
+            'location'=> ['required'],
+            'description'=> ['required'],
+            'course_id'=> ['required'],
         ];
+    }
+    protected function prepareForValidation(){
+        $jsondata = json_decode($this->payload, false,JSON_THROW_ON_ERROR);
+        $this->merge([
+            'name' => $jsondata->name,
+            'course_id' => $jsondata->course_id,
+            'section' => $jsondata->section,
+            'description' => $jsondata->description,
+            'location' => $this->file('location'),
+        ]);
     }
 }

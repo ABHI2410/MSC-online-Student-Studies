@@ -15,7 +15,8 @@ import GradePage from "./Modals/grade.js";
 import AssignmentPage from "./Modals/AssignmentList.js";
 import AssignmentDetails from "./Modals/AssignemntSubmission.js";
 import AssignmentDetailsList from "./Modals/AssignemntSubmissionList.js";
-
+import CourseModuleView from "./Modals/coursemoduleview.js";
+import AssignmentCreate from "./Modals/assignmentcreate.js";
 export const Routes = () => {
   return (
     <Router>
@@ -41,6 +42,9 @@ export const Routes = () => {
         <Route path="/course/:courseId/modules">
           <CourseModules />
         </Route>
+        <Route path="/modules/:moduleId">
+          <CourseModuleView />
+        </Route>
         <Route path="/course/:courseId/people">
           <CoursePeople />
         </Route>
@@ -61,6 +65,9 @@ export const Routes = () => {
         </Route>
         <Route path="/course/:courseId/assignment">
           <AssignmentPage />
+        </Route>
+        <Route path="/course/:courseId/createassignment">
+          <AssignmentCreate />
         </Route>
         <Route path="/course/:courseId/assignmentdetails">
           <AssignmentDetails />

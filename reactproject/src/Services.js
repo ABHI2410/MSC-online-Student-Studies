@@ -110,11 +110,13 @@ class LoginManager {
     }
 
     if (val) {
+      console.log("Entered in to file object part:", newUrl);
       newOptions.headers = {
         Authorization:
           "Bearer " + localStorage.getItem("LoginManager.accessToken"),
         ...options.headers,
       }; //enter token here
+      console.log(newUrl);
       return fetch(newUrl, newOptions);
     } else {
       newOptions.headers = {
@@ -123,6 +125,7 @@ class LoginManager {
         "Content-Type": "application/json",
         ...options.headers,
       };
+      console.log(newUrl);
       return fetch(newUrl, newOptions);
     }
   }
@@ -170,6 +173,7 @@ class LoginManager {
     }
   }
   async post(url, requestBody) {
+    console.log(url);
     let res = null;
     try {
       if (requestBody instanceof FormData) {
@@ -215,10 +219,8 @@ class LoginManager {
     );
     if (res === "RELOGIN") {
       this.logout();
-    } else if (res) {
-      return res;
     } else {
-      return this.delete(url, requestBody);
+      return res;
     }
   }
   async patch(url, requestBody) {

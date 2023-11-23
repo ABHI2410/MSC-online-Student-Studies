@@ -15,9 +15,10 @@ import IconButton from "@mui/material/IconButton";
 import { PdfViewer } from "../Components/filehandling";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { FileDownloadButton } from "../Components/filehandling";
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 export function Detailofcontent(props) {
-  const coursesData = props.data;
+  const coursesData = props.data.data[0];
   const [fileData, setFileData] = useState(null);
   const [blobFile, setBlobFile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +30,7 @@ export function Detailofcontent(props) {
         // console.log(loginManager.constructor.loggedIn);
         if (loginManager.constructor.loggedIn) {
           var url =
-            "http://127.0.0.1:8000/api/v1/files/" + coursesData.data.syllabus;
+            "http://127.0.0.1:8000/api/v1/files/" + coursesData.location;
 
           const response = await loginManager.get(url, []);
           setBlobFile(window.URL.createObjectURL(response));
@@ -46,12 +47,12 @@ export function Detailofcontent(props) {
     };
 
     fetchData();
-  }, [coursesData.data.syllabus]);
+  }, [coursesData.location]);
   const onDownloadClick = () => {
     // Setting various property values
     let alink = document.createElement("a");
     alink.href = blobFile;
-    alink.download = coursesData.data.syllabus.split("/").pop();
+    alink.download = coursesData.location.split("/").pop();
     alink.click();
   };
 
@@ -79,12 +80,17 @@ export function Detailofcontent(props) {
         >
           <Grid item xs={8}>
             <Typography variant="h4" color="text">
-              Syllabus
+              {coursesData.section}
+            </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body" color="text">
+              {coursesData.description}
             </Typography>
           </Grid>
           <Grid item xs={4}>
             <FileDownloadButton
-              fileName={coursesData.data.syllabus.split("/").pop()}
+              fileName={coursesData.location.split("/").pop()}
               file={blobFile}
             />
           </Grid>
@@ -93,7 +99,7 @@ export function Detailofcontent(props) {
         <Divider />
         <Grid item xs={12} sx={{ padding: "10px" }}>
           <Typography variant="body2" color="text.secondary">
-            Recommended Textboox:{coursesData.data.textbook}
+            Section:{coursesData.section}
           </Typography>
         </Grid>
       </Box>
@@ -111,7 +117,7 @@ function Courses(props) {
         const loginManager = LoginManager.getLoginManager();
         // console.log(loginManager.constructor.loggedIn);
         if (loginManager.constructor.loggedIn) {
-          var url = "/v1/courses/" + props.id;
+          var url = "/v1/modules?id[eq]=" + props.id;
 
           const response = await loginManager.get(url, []);
 
@@ -147,7 +153,7 @@ function Courses(props) {
       <ClippedDrawer
         content={[<Detailofcontent key="content" data={coursesData} />]}
         course={"Web Data Mangement"}
-        value={"Syllabus"}
+        value={"Modules"}
         id={props.id}
       />
     );
@@ -156,9 +162,10 @@ function Courses(props) {
   return <div style={{ height: "100%" }}>{renderData}</div>;
 }
 
-function CourseSyllabus() {
-  const { courseId } = useParams();
-  return <ResponsiveAppBar content={<Courses id={courseId} />} />;
+function CourseModuleView() {
+  const { moduleId } = useParams();
+  console.log(moduleId);
+  return <ResponsiveAppBar content={<Courses id={moduleId} />} />;
 }
 
-export default CourseSyllabus;
+export default CourseModuleView;

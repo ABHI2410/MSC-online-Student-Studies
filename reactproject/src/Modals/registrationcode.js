@@ -48,9 +48,11 @@ export function CodeData() {
 
   React.useEffect(() => {
     const fetchData = async () => {
+      console.log("before try");
       try {
+        console.log("sending post");
         const response = await loginManager.get("/v1/codes", []);
-        // console.log(response);
+
         setRows(response);
       } catch (error) {
         console.error(error);

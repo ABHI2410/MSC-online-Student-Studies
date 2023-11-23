@@ -1,4 +1,7 @@
 import React from "react";
+import Stack from "@mui/material/Stack";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import IconButton from "@mui/material/IconButton";
 // import { Document } from "react-doc-viewer";
 // import ZipViewer from "react-zip-viewer";
 // import CSVReader from "react-csv-reader";
@@ -8,15 +11,17 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { toolbarPlugin } from "@react-pdf-viewer/toolbar";
 import "@react-pdf-viewer/toolbar/lib/styles/index.css";
 export const PdfViewer = ({ PdfUrl }) => {
-  const toolbarPluginInstance = toolbarPlugin();
+  const toolbarPluginInstance = toolbarPlugin({});
   return (
     <Worker
-      workerUrl={"https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js"}
+      workerUrl={
+        "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"
+      }
     >
       <div
         style={{
           border: "1px solid rgba(0, 0, 0, 0.3)",
-          height: "750px",
+          overflow: "hidden",
         }}
       >
         <Viewer
@@ -29,6 +34,23 @@ export const PdfViewer = ({ PdfUrl }) => {
         />
       </div>
     </Worker>
+  );
+};
+
+export const FileDownloadButton = ({ fileName, file }) => {
+  const onDownloadClick = () => {
+    // Setting various property values
+    let alink = document.createElement("a");
+    alink.href = file;
+    alink.download = fileName;
+    alink.click();
+  };
+  return (
+    <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+      <IconButton aria-label="delete" onClick={onDownloadClick}>
+        <FileDownloadIcon />
+      </IconButton>
+    </Stack>
   );
 };
 

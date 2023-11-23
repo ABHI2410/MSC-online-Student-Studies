@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\ModulesController;
 use App\Http\Controllers\Api\V1\RegistrationcodeController;
 use App\Http\Controllers\Api\V1\UserCourseController;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ Route::group([
         'program' => ProgramController::class,
         'codes' => RegistrationcodeController::class,
         'usercourse' => UserCourseController::class,
+        'modules' => ModulesController::class,
     ]);
     Route::get('/files/{filePath}', 'FileController@getFile')->where('filePath', '.*');
 

@@ -43,6 +43,7 @@ function Courses() {
 
     fetchData();
   }, []);
+  console.log(coursesData);
   if (isLoading) {
     courseCards = (
       <Box sx={{ width: "100%", paddingTop: "20px" }}>
@@ -83,6 +84,27 @@ function Courses() {
         </Link>
       );
     }
+  } else if (coursesData && coursesData.course) {
+    // Handle the case where there is a single course
+    const courseData = coursesData; // Assuming coursesData has a course property
+    courseCards = (
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Link
+          to={{
+            pathname: `/course/${courseData.course.id}/dashboard`,
+          }}
+          style={{ textDecoration: "none", color: "#000000" }}
+        >
+          <ImgMediaCard
+            ImgUrl={logo}
+            Name={courseData.course.name}
+            Detail1={courseData.course.day}
+            Detail2={`${courseData.course.timeStart}-${courseData.course.timeEnd}`}
+            Detail3={`${courseData.customer.lastName}, ${courseData.customer.firstName}`}
+          />
+        </Link>
+      </Grid>
+    );
   } else if (!isLoading && coursesData.length !== 0) {
     courseCards = coursesData.map((coursesData, index) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>

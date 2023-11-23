@@ -13,7 +13,7 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function ClippedDrawer(props) {
   return (
-    <Box>
+    <Box sx={{ height: "100%" }}>
       <CssBaseline />
       <Grid container spacing={2}>
         <Grid item xs={12} elevation={3}>
@@ -76,7 +76,7 @@ export default function ClippedDrawer(props) {
               <Divider />
               <Link
                 to={{
-                  pathname: `/course/${props.id}/module`,
+                  pathname: `/course/${props.id}/modules`,
                 }}
                 style={{ textDecoration: "none", color: "#000000" }}
               >
