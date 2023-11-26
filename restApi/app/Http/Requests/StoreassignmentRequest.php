@@ -29,7 +29,6 @@ class StoreassignmentRequest extends FormRequest
             'availableFrom'=> ['required'],
             'availableUntill'=> ['required'],
             'files'=> ['sometimes'],
-            'attemptsAllowed' => ['sometimes'],
             'course_id'=> ['required'],
         ];
     }

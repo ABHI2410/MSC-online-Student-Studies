@@ -203,14 +203,57 @@ export function Detailofcontent(props) {
   );
 }
 function Courses(props) {
-  return (
-    <ClippedDrawer
-      content={[<Detailofcontent key="content" id={props.id} />]}
-      course={"Web Data Mangement"}
-      value={"Modules"}
-      id={props.id}
-    />
-  );
+  const [coursesData, setCoursesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  var renderData = null;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const loginManager = LoginManager.getLoginManager();
+        // console.log(loginManager.constructor.loggedIn);
+        if (loginManager.constructor.loggedIn) {
+          var url = "/v1/courses/" + props.id;
+
+          const response = await loginManager.get(url, []);
+
+          setCoursesData(response);
+        } else {
+          history.push("./login");
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      } finally {
+        setIsLoading(false);
+        // console.log(coursesData);
+      }
+    };
+
+    fetchData();
+  }, [props.id]);
+  if (isLoading) {
+    renderData = (
+      <Box sx={{ width: "100%", paddingTop: "20px" }}>
+        <LinearProgress />
+      </Box>
+    );
+  } else if (!isLoading && coursesData.length === 0) {
+    renderData = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Course Data Not Found</Typography>
+      </Box>
+    );
+  } else {
+    renderData = (
+      <ClippedDrawer
+        content={[<Detailofcontent key="content" id={props.id} />]}
+        course={coursesData.data.name}
+        value={"Module"}
+        id={props.id}
+      />
+    );
+  }
+  return <div>{renderData}</div>;
 }
 
 function CourseModules() {

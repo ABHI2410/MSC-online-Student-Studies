@@ -15,9 +15,15 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
+import history from "../history";
+import LoginManager from "../Services";
+import { format, utcToZonedTime } from "date-fns-tz";
+
 export function AssignmentList(props) {
+  console.log(props.data);
   return (
-    <diV>
+    <Box>
       <Stack
         direction="row"
         spacing={2}
@@ -25,7 +31,7 @@ export function AssignmentList(props) {
       >
         <Link
           to={{
-            pathname: `/course/${props.id}/assignmentcreate`,
+            pathname: `/course/${props.data[0].course.id}/createAssignment`,
           }}
           style={{ textDecoration: "none", color: "#000000" }}
         >
@@ -36,97 +42,114 @@ export function AssignmentList(props) {
       </Stack>
       <Paper variant="outlined" sx={{ marginTop: "20px" }}>
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          <ListItem
-            secondaryAction={
-              <Box container>
-                <IconButton edge="end" aria-label="Download">
-                  <DownloadIcon sx={{ margin: "5px" }} />
-                </IconButton>
-                <IconButton edge="end" aria-label="View">
-                  <VisibilityIcon sx={{ margin: "5px" }} />
-                </IconButton>
-              </Box>
-            }
-            disablePadding
-          >
-            <ListItemText
-              id={"Assignment 1"}
-              primary={"Assignment 1"}
-              sx={{ padding: "6px 16px" }}
-            />
-            <ListItemText
-              id={"Due:11/28/2023 10pm"}
-              primary={"Due:11/28/2023 10pm"}
-            />
-            <Divider variant="inset" component="li" />
-          </ListItem>
-          <Divider />
-
-          <ListItem
-            secondaryAction={
-              <Box container>
-                <IconButton edge="end" aria-label="Download">
-                  <DownloadIcon sx={{ margin: "5px" }} />
-                </IconButton>
-                <IconButton edge="end" aria-label="View">
-                  <VisibilityIcon sx={{ margin: "5px" }} />
-                </IconButton>
-              </Box>
-            }
-            disablePadding
-          >
-            <ListItemText
-              id={"Assignment 2"}
-              primary={"Assignment 2"}
-              sx={{ padding: "6px 16px" }}
-            />
-            <ListItemText
-              id={"Due:11/28/2023 10pm"}
-              primary={"Due:11/28/2023 10pm"}
-            />
-            <Divider variant="inset" component="li" />
-          </ListItem>
-          <Divider />
-
-          <ListItem
-            secondaryAction={
-              <Box container>
-                <IconButton edge="end" aria-label="Download">
-                  <DownloadIcon sx={{ margin: "5px" }} />
-                </IconButton>
-                <IconButton edge="end" aria-label="View">
-                  <VisibilityIcon sx={{ margin: "5px" }} />
-                </IconButton>
-              </Box>
-            }
-            disablePadding
-          >
-            <ListItemText
-              id={"Assignment 3"}
-              primary={"Assignment 3"}
-              sx={{ padding: "6px 16px" }}
-            />
-            <ListItemText
-              id={"Due:11/28/2023 10pm"}
-              primary={"Due:11/28/2023 10pm"}
-            />
-            <Divider variant="inset" component="li" />
-          </ListItem>
+          {props.data.map((assignment) => (
+            <React.Fragment key={assignment.name}>
+              <ListItem disablePadding>
+                <Link
+                  to={{
+                    pathname: `/assignment/${assignment.id}`,
+                  }}
+                  style={{ textDecoration: "none", color: "#000000" }}
+                >
+                  <ListItemText
+                    primary={assignment.name}
+                    secondary={format(
+                      utcToZonedTime(assignment.dueDate),
+                      "yyyy-MM-dd HH:mm:ss a",
+                      { timeZone: "America/Chicago" }
+                    )}
+                    sx={{ padding: "6px 16px" }}
+                  />
+                </Link>
+                <Box sx={{ marginLeft: "auto" }}>
+                  <Link
+                    to={{
+                      pathname: `/assignment/${assignment.id}`,
+                    }}
+                    style={{
+                      textDecoration: "none",
+                      color: "#000000",
+                    }}
+                  >
+                    <IconButton
+                      edge="end"
+                      aria-label="View"
+                      sx={{ marginRight: "20px" }}
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Link>
+                </Box>
+              </ListItem>
+              <Divider />
+            </React.Fragment>
+          ))}
         </List>
       </Paper>
-    </diV>
+    </Box>
   );
 }
 
 function Courses(props) {
-  return (
-    <ClippedDrawer
-      content={[<AssignmentList key="content" id={props.id} />]}
-      course={"Web Data Mangement"}
-      value={"Assignment"}
-      id={props.id}
-    />
-  );
+  const [coursesData, setCoursesData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  var renderData = null;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const loginManager = LoginManager.getLoginManager();
+        // console.log(loginManager.constructor.loggedIn);
+        if (loginManager.constructor.loggedIn) {
+          var url = "/v1/assignment?course_id[eq]=" + props.id;
+
+          const response = await loginManager.get(url, []);
+
+          setCoursesData(response);
+        } else {
+          history.push("./login");
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      } finally {
+        setIsLoading(false);
+        // console.log(coursesData);
+      }
+    };
+
+    fetchData();
+  }, []);
+  if (isLoading) {
+    renderData = (
+      <Box sx={{ width: "100%", paddingTop: "20px" }}>
+        <LinearProgress />
+      </Box>
+    );
+  } else if (!isLoading && coursesData.length === 0) {
+    renderData = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Course Data Not Found</Typography>
+      </Box>
+    );
+  } else if (!isLoading && coursesData.length !== 0) {
+    console.log(coursesData[0].course.name);
+    renderData = (
+      <ClippedDrawer
+        content={[<AssignmentList key="content" data={coursesData} />]}
+        course={coursesData[0].course.name}
+        value={"Assignment"}
+        id={props.id}
+      />
+    );
+  } else {
+    renderData = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Couldnt fetch the content</Typography>
+      </Box>
+    );
+  }
+
+  return <div style={{ height: "100%" }}>{renderData}</div>;
 }
 
 function AssignmentPage() {

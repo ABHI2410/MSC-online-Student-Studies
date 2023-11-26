@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AssignmentController;
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\ModulesController;
@@ -36,6 +37,7 @@ Route::group([
         'codes' => RegistrationcodeController::class,
         'usercourse' => UserCourseController::class,
         'modules' => ModulesController::class,
+        'assignment' => AssignmentController::class,
     ]);
     Route::get('/files/{filePath}', 'FileController@getFile')->where('filePath', '.*');
 

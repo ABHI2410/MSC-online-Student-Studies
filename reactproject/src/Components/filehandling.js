@@ -21,7 +21,7 @@ export const PdfViewer = ({ PdfUrl }) => {
       <div
         style={{
           border: "1px solid rgba(0, 0, 0, 0.3)",
-          overflow: "hidden",
+          height: "500px",
         }}
       >
         <Viewer

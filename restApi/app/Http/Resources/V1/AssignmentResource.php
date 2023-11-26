@@ -32,6 +32,7 @@ class AssignmentResource extends JsonResource
             'medianScore' => $this->medianScore,
             'upperQuantileScore' => $this->upperQuantileScore,
             'lowerQuantileScore'=> $this->lowerQuantileScore,
-            'course_id' => $this->course_id,
+            'course' => CourseResource::collection($this->whenLoaded('course')),
         ];
+    }   
 }

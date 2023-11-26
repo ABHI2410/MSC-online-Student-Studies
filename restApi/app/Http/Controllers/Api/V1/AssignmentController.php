@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\AssignmentResource;
 use Carbon\Carbon;
 use App\Models\assignment;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreassignmentRequest;
 use App\Http\Requests\UpdateassignmentRequest;
 use App\Filter\V1\AssignmentQuery;
@@ -14,15 +16,13 @@ class AssignmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $filter = new AssignmentQuery();
         $queryItems = $filter->transform($request);
-        if (count($queryItems) == 0){
-            return new AssignmentCollection(assignment::get());
-        } else {
-            return new AssignmentCollection(assignment::where($queryItems)->get());
-        }
+        $assignments = assignment::where($queryItems);
+        $assignments = $assignments->with('course')->get();
+        return $assignments;
     }
 
     /**
@@ -44,7 +44,7 @@ class AssignmentController extends Controller
         $requestData['customer_id'] = $request->customer_id;
 
         foreach ($requestData as $key => $value) {
-            if ($key === 'availableFrom' || $key === 'availableUntill') {
+            if ($key === 'availableFrom' || $key === 'availableUntill' || $key === 'dueDate') {
                 // Check if the key contains 'date'
                 $requestData[$key] = Carbon::parse($value);
             }
@@ -53,15 +53,15 @@ class AssignmentController extends Controller
         $file = $request->file('files');
 
         // Store the file in the specified location
-        $fileName = strtolower($request->input('name')) . '_assignment.' . $file->getClientOriginalExtension();
-        $filePath = $file->storeAs('file/' . strtolower($request->input('name')), $fileName);
+        $fileName = strtolower($requestData['name']) . '_assignment.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('file/' . strtolower($requestData['name']), $fileName);
 
         // Update the 'syllabus' field in the request data with the file path
         $requestData['files'] = $filePath;
-        $course = new assignment($requestData);
-        // $course->save();
+        $assignment = new assignment($requestData);
+        $assignment->save();
 
-        return $course;
+        return $assignment;
 
     }
 
@@ -70,7 +70,7 @@ class AssignmentController extends Controller
      */
     public function show(assignment $assignment)
     {
-        //
+        return new AssignmentResource($assignment);
     }
 
     /**

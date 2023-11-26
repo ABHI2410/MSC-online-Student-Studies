@@ -16,7 +16,8 @@ import AssignmentPage from "./Modals/AssignmentList.js";
 import AssignmentDetails from "./Modals/AssignemntSubmission.js";
 import AssignmentDetailsList from "./Modals/AssignemntSubmissionList.js";
 import CourseModuleView from "./Modals/coursemoduleview.js";
-import AssignmentCreate from "./Modals/assignmentcreate.js";
+import CreateAssignment from "./Modals/createassignment.js";
+
 export const Routes = () => {
   return (
     <Router>
@@ -66,13 +67,13 @@ export const Routes = () => {
         <Route path="/course/:courseId/assignment">
           <AssignmentPage />
         </Route>
-        <Route path="/course/:courseId/createassignment">
-          <AssignmentCreate />
+        <Route path="/course/:courseId/createAssignment">
+          <CreateAssignment />
         </Route>
-        <Route path="/course/:courseId/assignmentdetails">
+        <Route path="/assignment/:assignId">
           <AssignmentDetails />
         </Route>
-        <Route path="/course/:courseId/assignmentdetailslist">
+        <Route path="/assignmentlist/:assignId">
           <AssignmentDetailsList />
         </Route>
       </Switch>

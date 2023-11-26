@@ -146,7 +146,7 @@ function Courses(props) {
     renderData = (
       <ClippedDrawer
         content={[<Detailofcontent key="content" data={coursesData} />]}
-        course={"Web Data Mangement"}
+        course={coursesData.data.name}
         value={"Syllabus"}
         id={props.id}
       />

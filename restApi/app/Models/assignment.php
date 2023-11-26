@@ -16,7 +16,6 @@ class assignment extends Model
         'availableFrom',
         'availableUntill',
         'files',
-        'attemptsAllowed',
         'course_id',
     ];
     public function course(){

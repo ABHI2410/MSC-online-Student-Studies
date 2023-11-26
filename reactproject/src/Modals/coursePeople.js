@@ -1,11 +1,13 @@
 import * as React from "react";
 import ResponsiveAppBar from "../Components/header";
 import ClippedDrawer from "../Components/cousenavbar";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useParams } from "react-router-dom";
 import LoginManager from "../Services";
 import { useState, useEffect } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
+import history from "../history";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -86,14 +88,57 @@ export function PeopleData(props) {
   );
 }
 function Courses(props) {
-  return (
-    <ClippedDrawer
-      content={[<PeopleData key="content" id={props.id} />]}
-      course={"Web Data Mangement"}
-      value={"People"}
-      id={props.id}
-    />
-  );
+  const [coursesData, setCoursesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  var renderData = null;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const loginManager = LoginManager.getLoginManager();
+        // console.log(loginManager.constructor.loggedIn);
+        if (loginManager.constructor.loggedIn) {
+          var url = "/v1/courses/" + props.id;
+
+          const response = await loginManager.get(url, []);
+
+          setCoursesData(response);
+        } else {
+          history.push("./login");
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      } finally {
+        setIsLoading(false);
+        // console.log(coursesData);
+      }
+    };
+
+    fetchData();
+  }, []);
+  if (isLoading) {
+    renderData = (
+      <Box sx={{ width: "100%", paddingTop: "20px" }}>
+        <LinearProgress />
+      </Box>
+    );
+  } else if (!isLoading && coursesData.length === 0) {
+    renderData = (
+      <Box sx={{ padding: "20px" }}>
+        <Typography variant="h6">Course Data Not Found</Typography>
+      </Box>
+    );
+  } else {
+    renderData = (
+      <ClippedDrawer
+        content={[<PeopleData key="content" id={props.id} />]}
+        course={coursesData.data.name}
+        value={"People"}
+        id={props.id}
+      />
+    );
+  }
+  return <div>{renderData}</div>;
 }
 
 function CoursePeople() {
