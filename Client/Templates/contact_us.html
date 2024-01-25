@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="../StaticFiles/CSS/main.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+            <script src="../StaticFiles/JS/main.min.js"></script>
+            <title>Contact US</title>
+    </head>
+<body>
+    <header class="top-bar flex">
+        <div class="flex">
+            <h3>MSC</h3>
+        </div>
+        <div class="flex">
+            <a href="about_us.html" class="nav-bar-text no-underline">About</a>
+        </div>
+        <div class="flex">
+            <a href="services.html" class="nav-bar-text no-underline">Services</a>
+        </div>
+        <div class="flex">
+            <a href="contact_us.html" class=" nav-bar-text no-underline">Contact</a>
+        </div>
+        <div class="flex">
+            <div class="button-container">
+                <a href="login.html" class="rounded-button no-underline">Login</a>
+            </div>
+        </div>
+    </header>
+    <div class="content" style="background-color: white;">
+    <h1 class="hhh" >Contact Us</h1>
+    <p>Have a question or need assistance? Fill out the form below to get in touch with us.</p>
+
+    <form action="submit_form.php" class="contact_form" method="POST">
+
+        <label for="name">Name:</label>
+        <input type="text" placeholder="Name" name="name" class="input" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" placeholder="Email" name="email" class="input" required><br><br>
+
+        <label for="subject">Subject:</label>
+        <input type="text" placeholder="Subject" name="subject" class="input" required><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea placeholder="Type Here" name="message" rows="4" cols="50" class="input" required></textarea><br><br>
+
+        <input type="submit"  value="Submit">
+    </form>
+</div>
+</body>
+</html>

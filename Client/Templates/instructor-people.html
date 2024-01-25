@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Base Page</title>
+    <head>
+        <link href="../StaticFiles/CSS/main.min.css" rel="stylesheet">
+        <link href="../StaticFiles/CSS/student.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+        <script src="../StaticFiles/JS/main.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+</head>
+<body>
+  <div class="header">
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn"><i class="fas fa-bars"></i></label>
+    <a href="#" class="logo">MSC</a>
+  <div class = "wrapper">
+    <ul>
+      <li><a href="./instructor-profile.html">Profile</a></li>
+      <li><a href="./course_list.html">Courses</a></li>
+    </ul>
+
+    <ol>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Help</a></li>
+      <li><a href="./login.html">Logout</a></li>
+    </ol>
+  </div>
+</div>
+  
+<div class="content">
+    <div class="sidebar">
+      <a href="./instructor.html">Home</a>
+      <a href="./instructor-create-course.html">Create Course</a>
+      <a href="./instructor-discussion.html">Discussion</a>
+      <a class="active" href="#People">People</a>
+    </div>
+    <div class="main">
+        <!-- Simulate a smartphone / tablet -->
+        <div class="row">
+            <!-- Navigation Menu -->
+            <div class="topnav">
+                <p class="course-name">Web Data Management</p>
+                <div id="myLinks">
+                  <a href="./instructor.html">Home</a>
+                  <a href="./instructor-create-course.html">Create Course</a>
+                  <a href="./instructor-discussion.html">Discussion</a>
+                  <a href="./instructor-people.html">People</a>
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="icon-chevron-down"></i>
+                  </a>
+            </div>
+            
+            <script>
+                function myFunction() {
+                  var x = document.getElementById("myLinks");
+                  if (x.style.display === "block") {
+                    x.style.display = "none";
+                  } else {
+                    x.style.display = "block";
+                  }
+                }
+                </script>
+        </div>
+
+        <div class="row">
+            <table id = "class">
+                <tr class="module">
+                    <th class="modulesection">Class members</th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+                <tr>
+                    <td>Jane Doe</td>
+                    <td>Student</td>
+                </tr>
+                <tr>
+                    <td>Jhon Doe</td>
+                    <td>Student</td>
+                </tr>
+       
+              </table>
+        </div>
+
+        </div>
+    </div>
+
+    
+    
+ </div>
+ <div class="chatbox">
+  <div class="chatbox-header">
+    <span>Chat</span>
+  </div>
+  <div class="chatbox-content">
+    <div class="message">
+      <div class="user-avatar"><img src="../StaticFiles/Media/profile.png" alt="User"></div>
+      <div class="message-content">
+        <p class="user-name">User</p>
+        <p class="message-text">Hello! How can I help you today?</p>
+      </div>
+    </div>
+  </div>
+  <div class="chatbox-input">
+    <input type="text" placeholder="Type your message">
+    <button>Send</button>
+  </div>
+</div>  
+</body>
+</html>

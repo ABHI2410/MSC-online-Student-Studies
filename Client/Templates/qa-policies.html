@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Base Page</title>
+    <head>
+        <link href="../StaticFiles/CSS/main.min.css" rel="stylesheet">
+        <link href="../StaticFiles/CSS/student.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+        <script src="../StaticFiles/JS/main.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            #policies {
+                display: none;
+            }
+
+            #policies.active {
+                display: block;
+            }
+
+            .policy-content {
+                padding: 20px;
+            }
+
+            .policy-content ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .policy-content ul li {
+                margin-bottom: 10px;
+            }
+
+            .close-btn {
+                background-color: #ff3333;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+        </style>
+      </head>
+</head>
+<body>
+  <div class="header">
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn"><i class="fas fa-bars"></i></label>
+    <a href="#" class="logo">MSC</a>
+  <div class = "wrapper">
+    <ul>
+      <li><a href="./qa-profile.html">Profile</a></li>
+      <li><a href="./course_list.html">Courses</a></li>
+    </ul>
+
+    <ol>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Help</a></li>
+      <li><a href="./login.html">Logout</a></li>
+    </ol>
+  </div>
+</div>
+  
+<div class="content">
+    <div class="sidebar">
+      <a href="./qa.html">Home</a>
+      <a class="active" href="./qa-policies.html">Policies</a>
+      <a href="./qa-recomendations.html">Recommendation</a>
+    </div>
+    <div class="main">
+        <!-- Simulate a smartphone / tablet -->
+        <div class="row">
+            <!-- Navigation Menu -->
+            <div class="topnav">
+                <div id="myLinks">
+                  <a href="./qa.html">Home</a>
+                  <a href="./qa-policies.html">Policies</a>
+                  <a href="./qa-recomendations.html">Recommendations</a>
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="icon-chevron-down"></i>
+                  </a>
+            </div>
+            
+            <script>
+                function myFunction() {
+                  var x = document.getElementById("myLinks");
+                  if (x.style.display === "block") {
+                    x.style.display = "none";
+                  } else {
+                    x.style.display = "block";
+                  }
+                }
+                </script>
+        </div>
+        <div class="row">
+            <table id = "class">
+                <tr class="module">
+                    <th class="modulesection">Quality Assurance Policies</th>
+                </tr>
+                <tr>
+                    <th>Policy</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Policy 1: Maintain an updated list of students at all time</td>
+                    <td>
+                        <button class="update-btn">Update</button>
+                        <button class="remove-btn">Remove</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Policy 2: Keep the course documents updated always</td>
+                    <td>
+                        <button class="update-btn">Update</button>
+                        <button class="remove-btn">Remove</button>
+                    </td>
+                </tr>
+       
+              </table>
+        </div>
+        <div class="row">
+            <div class="message-board">                
+                <div class="message-input">
+                    <input type="text" placeholder="Policy">
+                </div>
+                <div style="padding-top: 20px;">
+                    <button class="message-input">Add Policy</button>
+                </div>
+
+        </div>
+        
+    </div>
+ </div>
+ <div class="chatbox">
+  <div class="chatbox-header">
+    <span>Chat</span>
+  </div>
+  <div class="chatbox-content">
+    <div class="message">
+      <div class="user-avatar"><img src="../StaticFiles/Media/profile.png" alt="User"></div>
+      <div class="message-content">
+        <p class="user-name">User</p>
+        <p class="message-text">Hello! How can I help you today?</p>
+      </div>
+    </div>
+  </div>
+  <div class="chatbox-input">
+    <input type="text" placeholder="Type your message">
+    <button>Send</button>
+  </div>
+</div>  
+</body>
+</html>

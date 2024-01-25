@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/msc.uta.cloud/register/static/css/main.e443351c.css",
+    "main.js": "/msc.uta.cloud/register/static/js/main.7bc31450.js",
+    "static/js/988.925e1074.chunk.js": "/msc.uta.cloud/register/static/js/988.925e1074.chunk.js",
+    "static/media/MSC-logos_white.png": "/msc.uta.cloud/register/static/media/MSC-logos_white.86281be7f219022ef007.png",
+    "static/media/man.svg": "/msc.uta.cloud/register/static/media/man.3df09ff780e6cd613c0ddb9ba756ac71.svg",
+    "index.html": "/msc.uta.cloud/register/index.html",
+    "main.e443351c.css.map": "/msc.uta.cloud/register/static/css/main.e443351c.css.map",
+    "main.7bc31450.js.map": "/msc.uta.cloud/register/static/js/main.7bc31450.js.map",
+    "988.925e1074.chunk.js.map": "/msc.uta.cloud/register/static/js/988.925e1074.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e443351c.css",
+    "static/js/main.7bc31450.js"
+  ]
+}

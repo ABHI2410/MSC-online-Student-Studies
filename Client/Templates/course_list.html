@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List Page</title>
+        <link href="../StaticFiles/CSS/main.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+        <script src="../StaticFiles/JS/main.min.js"></script>
+</head>
+<body>
+    <header class="top-bar flex">
+        <div class="flex">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg>
+            <h3>MSC</h3>
+        </div>
+        <div class="flex">
+            <div class="profile">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+            </div>
+            <h3 class="">Name</h3>
+        </div>
+    </header>
+  
+  <div class="content" style="background-color: white;">
+    <div class="container03">
+        <div class="image">
+            <img src="../StaticFiles/Media/pexels-andrea-piacquadio-3807755.jpg" alt="Image on the right">
+        </div>
+        <div class="text">
+            <h1>Courses List</h1>
+            <p>Students with an undergraduate degree in Computer Science, Computer Engineering, Software Engineering, or a degree from a directly related field, or who have completed the foundation courses specified in the Foundation Courses section may select this program</p>
+            <div class="button-container_light">
+                <button class="rounded-button">Program Guide</button>
+            </div> 
+        </div>
+        
+    </div>
+     <div class="container04">
+            <div class="grid-container">
+                <div class="grid-item">
+                    <h1>Database Systems</h1>
+                    <p>CSE 5330</p>
+                    <p>Database Systems or DBMS is software that caters to the collection of electronic and digital records to extract useful information and store that information</p>
+                    <div class="button-container_light">
+                        <a href="subject_details_db.html" class="rounded-button no-underline">More Details</a>
+                    </div> 
+                </div>
+                <div class="grid-item">
+                    <h1>Data Mining</h1>
+                    <p>CSE 5331</p>
+                    <p>Data mining is the process of sorting through large data sets to identify patterns and relationships that can help solve business problems through data analysis.</p>
+                    <div class="button-container_light">
+                        <a href="subject_details_dm.html"class="rounded-button">More Details</a>
+                    </div> 
+                </div>
+                <div class="grid-item">
+                    <h1>Web Data Management</h1>
+                    <p>CSE 5332</p>
+                    <p>body of work concerned with leveraging the large collections of structured data that can be extracted from the Web.</p>
+                    <div class="button-container_light">
+                        <a href="subject_details_wdm.html"class="rounded-button">More Details</a>
+                    </div> 
+                </div>
+    </div>
+    <div class="controller">
+        <div class="arrows">
+            <button id="prev-columns"><i class="arrow left"></i></button>
+            <!-- <div class="pagination" id="pagination"></div> -->
+            <button id="next-columns"><i class="arrow right"></i></button>
+        </div>
+    </div>
+    </div>
+</div>
+
+</body>
+</html>
